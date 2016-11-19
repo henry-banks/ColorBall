@@ -15,12 +15,19 @@ public:
 	Hull hull;
 
 	void DebugDraw(const mat3 &t, const Transform &trans);
+	void Draw(const mat3 &t, const Transform &trans, unsigned color);
 };
 
 CollisionData ColliderCollision(const Transform &aT, const Collider &aC,
 								const Transform &bT, const Collider &bC);
 
 CollisionData StaticResolution(Transform &aT, RigidBody &aR, const Collider &aC,
-							  Transform &bT, const Collider &bC, float bounciness = 1);
+							   Transform &bT, const Collider &bC, float bounciness = 1);
 CollisionData DynamicResolution(Transform &aT, RigidBody &aR, const Collider &aC,
-							   Transform &bT, RigidBody &bR, const Collider &bC, float bounciness = 1);
+							    Transform &bT, RigidBody &bR, const Collider &bC, float bounciness = 1);
+
+
+
+//Special type of DynamicResolution specifically for player and ball
+CollisionData BallResolution(Transform &aT, RigidBody &aR, const Collider &aC,
+							 Transform &bT, RigidBody &bR, const Collider &bC, float bounciness = 1);

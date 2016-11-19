@@ -42,6 +42,13 @@ void Collider::DebugDraw(const mat3 & t, const Transform & trans)
 
 }
 
+void Collider::Draw(const mat3 & t, const Transform & trans, unsigned color)
+{
+	mat3 glob = t * trans.getGlobalTransform();
+
+	drawHull(glob * hull, color);
+}
+
 CollisionData ColliderCollision(const Transform & aT, const Collider & aC, const Transform & bT, const Collider & bC)
 {
 	CollisionData out;

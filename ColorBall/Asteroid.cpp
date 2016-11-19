@@ -4,7 +4,7 @@
 
 Asteroid::Asteroid()
 {
-	vec2 hullVerts[] = { {-10,0},{0,10},{10,0} };
+	vec2 hullVerts[] = { {-10,-6},{0,6},{10,-6} };
 	collider = Collider(hullVerts, 3);
 
 	transform.scl = vec2{ 12,12 };

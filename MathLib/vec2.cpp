@@ -168,6 +168,11 @@ vec2 fromAngle(float a)
 	return out;
 }
 
+float dist(const vec2 & lhs, const vec2 & rhs)
+{
+	return sqrtf(pow(rhs.x - lhs.x, 2) + pow(rhs.y - lhs.y, 2));
+}
+
 vec2 min(const vec2 & a, const vec2 & b)
 {
 	vec2 out;

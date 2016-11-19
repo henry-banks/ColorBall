@@ -2,9 +2,9 @@
 #include "GameState.h"
 
 
-Camera::Camera()
+Camera::Camera(int W, int H)
 {
-	proj = translate(600, 600) * scale(2, 2);
+	proj = translate(W, H) * scale(4, 4);
 }
 
 
@@ -17,7 +17,7 @@ mat3 Camera::getCameraMatrix() const
 	return proj * inverse(transform.getGlobalTransform());
 }
 
-void Camera::update(float deltaTime, GameState & gs)
+void Camera::update(float deltaTime, const vec2 &movement, GameState & gs)
 {
-	transform.pos = gs.player.transform.getGlobalPos();
+	transform.pos = movement;
 }

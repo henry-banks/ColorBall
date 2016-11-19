@@ -1,7 +1,10 @@
 #pragma once
 #include "PlayerShip.h"
+#include "PlayerSprite.h"
 #include "Camera.h"
 #include "Asteroid.h"
+#include "PlayerBall.h"
+#include "CaptureBall.h"
 /*
 	INIT(ialize)
 		- Called at application start
@@ -29,15 +32,21 @@
 class GameState
 {
 public:
-	GameState();
+	GameState(int W = 600, int H = 600);
 	~GameState();
 
-	PlayerShip	player;
-	Camera		camera;
-	Asteroid	asteroid[2];
+	PlayerSprite	player;
+	Camera			camera;
+	PlayerBall		asteroid[2];
+	CaptureBall		cap[4];
+
+	//Used to lock cursor to screen
+	bool cursorLock;
+	bool isWin;
+	float lockTimer; //Timer to prevent toggle spam
 
 	void play();
-	void update(float deltaTime);
+	void update(float deltaTime, const vec2 &movement, const vec2 &cam);
 	void draw();
 };
 
