@@ -1,10 +1,13 @@
 #pragma once
+#include "State.h"
 #include "PlayerShip.h"
 #include "PlayerSprite.h"
 #include "Camera.h"
 #include "Asteroid.h"
 #include "PlayerBall.h"
 #include "CaptureBall.h"
+
+#include <Windows.h>
 /*
 	INIT(ialize)
 		- Called at application start
@@ -29,10 +32,11 @@
 */
 
 
-class GameState
+class GameState : public State
 {
 public:
-	GameState(int W = 600, int H = 600);
+	GameState(float W_a = 600, float H_a = 600);
+	GameState(unsigned inFont, float W_a = 600, float H_a = 600);
 	~GameState();
 
 	PlayerSprite	player;
@@ -44,9 +48,17 @@ public:
 	bool cursorLock;
 	bool isWin;
 	float lockTimer; //Timer to prevent toggle spam
+	float W, H;
+
+	POINT cursorPos[1];
+	bool releaseCursor;
+	float releaseTimer;
 
 	void play();
-	void update(float deltaTime, const vec2 &movement, const vec2 &cam);
+	void tick();
+	void tick(float deltaTime, const vec2 &movement, vec2 &cam);
 	void draw();
+
+	EState next();
 };
 

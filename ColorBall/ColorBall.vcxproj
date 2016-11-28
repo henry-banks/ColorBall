@@ -124,11 +124,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Asteroid.cpp" />
+    <ClCompile Include="Button.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CaptureBall.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MenuButton.cpp" />
+    <ClCompile Include="MenuState.cpp" />
     <ClCompile Include="ObjectCollision.cpp" />
     <ClCompile Include="PlanetMotor.cpp" />
     <ClCompile Include="PlanetRender.cpp" />
@@ -142,14 +145,18 @@
     <ClCompile Include="Spaceship.cpp" />
     <ClCompile Include="SpaceshipController.cpp" />
     <ClCompile Include="SpriteController.cpp" />
+    <ClCompile Include="State.cpp" />
     <ClCompile Include="Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Asteroid.h" />
+    <ClInclude Include="Button.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CaptureBall.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="GameState.h" />
+    <ClInclude Include="MenuButton.h" />
+    <ClInclude Include="MenuState.h" />
     <ClInclude Include="ObjectCollision.h" />
     <ClInclude Include="PlanetMotor.h" />
     <ClInclude Include="PlanetRender.h" />
@@ -163,6 +170,8 @@
     <ClInclude Include="Spaceship.h" />
     <ClInclude Include="SpaceshipController.h" />
     <ClInclude Include="SpriteController.h" />
+    <ClInclude Include="State.h" />
+    <ClInclude Include="StateEnum.h" />
     <ClInclude Include="Transform.h" />
   </ItemGroup>
   <ItemGroup>

@@ -5,7 +5,10 @@
 
 #include "sfwdraw.h"
 #include "GameState.h"
+#include "MenuState.h"
 #include "flops.h"
+
+//Make sure Windows.h is LAST
 #include <Windows.h>
 
 using namespace sfw;
@@ -14,7 +17,7 @@ using namespace std;
 
 void main()
 {
-	float W = 1200, H = 800;
+	float W = 800, H = 600;
 	char title[] = "ColorBall";
 	initContext(W, H, title);
 	setBackgroundColor(0x222222ff);
@@ -23,12 +26,15 @@ void main()
 
 	unsigned f = loadTextureMap("./fontmap.png", 16, 16);
 
-	GameState game(W / 2, H / 2);
+	GameState game = GameState(f, W, H);
 	game.play();
+	MenuState menu = MenuState(f, W, H);
+
+	EState state = EState::ENTER_MENU;
 
 	//used to move player
-	vec2 movement = { 0, 0 };
-	vec2 cam = movement;
+	vec2 movement = { 0, 0 }; //remove?
+	vec2 cam = { 0,0 };
 
 	//Lock cursor to window
 	/*HWND hwnd;
@@ -43,17 +49,32 @@ void main()
 	Hide cursor
 	ShowCursor(false);*/
 
-	bool releaseCursor = false;
-	float releaseTimer = 0.f;
-
 	bool isExit = false;
 
 	while (stepContext() && !isExit)
 	{
 		float deltaTime = getDeltaTime();
 
-		game.update(deltaTime, movement, cam);
-		game.draw();
+		switch (state)
+		{
+		case EState::ENTER_MENU:
+			menu.play();
+		case EState::MENU:
+			menu.tick();
+			menu.draw();
+			state = menu.next();
+			break;
+		case EState::ENTER_GAME:
+			game.play();
+		case EState::GAME:
+			game.tick(deltaTime, movement, cam);
+			game.draw();
+			state = game.next();
+			break;
+		case EState::TERMINATE:
+			isExit = true;
+			break;
+		}
 
 		if (getKey('Q'))
 		{
@@ -69,48 +90,10 @@ void main()
 
 		drawString(f, xpos.c_str(), 5, 20, 12, 12, 0, '\0', WHITE);
 		drawString(f, ypos.c_str(), 175, 20, 12, 12, 0, '\0', WHITE);
-
-		drawString(f, "Press E to exit\nPress R to toggle locked cursor", 0, H - 5, 16, 16, 0, '\0', WHITE);
-		releaseCursor ? drawString(f, "OPEN", W / 2, H - 5, 16, 16, 0, '\0', GREEN) : drawString(f, "LOCKED", W / 2, H - 5, 16, 16, 0, '\0', RED);
-
-		//Got most of this from the internet
-		POINT cursorPos[1];
-		GetCursorPos(cursorPos);
-
-		movement = vec2{ cursorPos[0].x - (W / 2), (H / 2) - cursorPos[0].y };
-		cam += movement;
+		
 		//printf("%f, %f\n", cursorPos[0].x, cursorPos[0].y);
 		printf("%f, %f\n", cam.x, cam.y);
-
-		if ((cursorPos[0].x != W / 2 || cursorPos[0].y != H / 2) && !releaseCursor)
-		{
-			RigidBody &r = game.player.rigidbody;
-			//game.player.transform.pos += movement;
-			float d = dist(game.player.transform.pos, cam);
-
-			r.addForce(movement * (d/10));
-			//r.velocity = cam - game.player.transform.pos;
-			r.addTorque(angle(movement));
-			SetCursorPos(W / 2, H / 2);
-		}
-
-		if (game.player.transform.pos != cam)
-		{
-			//t.rotAngle = angleBetween(t.pos, movement);
-		}
-
-		//game.player.transform.rotAngle += deltaTime;
-
-		if (releaseTimer > 0)
-			releaseTimer -= deltaTime;
-
-		if (getKey('R') && releaseTimer <= 0)
-		{
-			//Flip-flop releaseCursor
-			releaseCursor = releaseCursor ? false : true;
-			SetCursorPos(W / 2, H / 2);
-			releaseTimer = .5f;
-		}
+		
 
 		if (getKey('E'))
 		{
