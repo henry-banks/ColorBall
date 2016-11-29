@@ -4,7 +4,6 @@
 #include <cstdlib>
 #include <ctime>
 #include <math.h>
-#include <Windows.h>
 
 using namespace sfw;
 
@@ -18,6 +17,7 @@ GameState::GameState(float W_a, float H_a)
 
 	camera = Camera(W/2, H/2);
 	nextState = EState::GAME;
+	movement = { W / 2, H / 2 };
 }
 
 GameState::GameState(unsigned inFont, float W_a, float H_a)
@@ -31,6 +31,24 @@ GameState::GameState(unsigned inFont, float W_a, float H_a)
 	camera = Camera(W/2, H/2);
 	nextState = EState::GAME;
 	font = inFont;
+	movement = { W / 2, H / 2 };
+}
+
+GameState::GameState(std::string inTitle, unsigned inFont, float W_a, float H_a)
+{
+	W = W_a;
+	H = H_a;
+
+	releaseCursor = false;
+	releaseTimer = 0.f;
+
+	camera = Camera(W / 2, H / 2);
+	nextState = EState::GAME;
+	font = inFont;
+	title = inTitle;
+	movement = { W / 2, H / 2 };
+
+	hwnd = FindWindow(0, title.c_str());
 }
 
 GameState::~GameState()
@@ -40,6 +58,7 @@ GameState::~GameState()
 void GameState::play()
 {
 	srand(time(0));
+	SetCursorPos(player.transform.pos.x, player.transform.pos.y);
 	GetCursorPos(cursorPos);
 
 	isWin = false;
@@ -67,6 +86,7 @@ void GameState::play()
 		float y = rand() % 800 - 400;
 
 		cap[i].transform.pos = vec2{ x,y };
+		cap[i].transform.rotAngle = rand();
 	}
 }
 
@@ -74,7 +94,7 @@ void GameState::tick()
 {
 }
 
-void GameState::tick(float deltaTime, const vec2 &movement, vec2 &cam)
+void GameState::tick(float deltaTime, vec2 &cam)
 {
 	for (int i = 0; i < 4; i++)
 	{
@@ -88,9 +108,8 @@ void GameState::tick(float deltaTime, const vec2 &movement, vec2 &cam)
 	//If the player won, STOP EVERYTHING
 	if (isWin)
 		return;
-
-	player.update(deltaTime, movement, *this);
-	camera.update(deltaTime, cam, *this);
+	
+	GetCursorPos(cursorPos);
 
 	for (int i = 0; i < 2; i++)
 	{
@@ -108,7 +127,6 @@ void GameState::tick(float deltaTime, const vec2 &movement, vec2 &cam)
 	}
 
 
-	//Got most of this from the internet
 	for (int i = 0; i < 4; i++)
 	{
 		cap[i].update(deltaTime, *this);
@@ -118,38 +136,8 @@ void GameState::tick(float deltaTime, const vec2 &movement, vec2 &cam)
 		}
 	}
 
-	if ((cursorPos[0].x != W / 2 || cursorPos[0].y != H / 2) && !releaseCursor)
-	{
-		RigidBody &r = player.rigidbody;
-		//game.player.transform.pos += movement;
-		float d = dist(player.transform.pos, cam);
-
-		r.addForce(movement * (d / 10));
-		//r.velocity = cam - game.player.transform.pos;
-		r.addTorque(angle(movement));
-		SetCursorPos(W / 2, H / 2);
-	}
-
-	if (player.transform.pos != cam)
-	{
-		//t.rotAngle = angleBetween(t.pos, movement);
-	}
-
-	//game.player.transform.rotAngle += deltaTime;
-
-	if (releaseTimer > 0)
-		releaseTimer -= deltaTime;
-
-	if (getKey('R') && releaseTimer <= 0)
-	{
-		//Flip-flop releaseCursor
-		releaseCursor = releaseCursor ? false : true;
-		SetCursorPos(W / 2, H / 2);
-		releaseTimer = .5f;
-	}
-
-	cam += movement;
-
+	player.update(deltaTime, movement, *this);
+	camera.update(deltaTime, cam, *this);
 }
 
 void GameState::draw()
@@ -168,6 +156,8 @@ void GameState::draw()
 
 	for (int i = 0; i < 4; i++)
 		cap[i].draw(cam);
+
+	
 }
 
 EState GameState::next()

@@ -17,7 +17,7 @@ using namespace std;
 
 void main()
 {
-	float W = 800, H = 600;
+	float W = 1200, H = 800;
 	char title[] = "ColorBall";
 	initContext(W, H, title);
 	setBackgroundColor(0x222222ff);
@@ -26,7 +26,7 @@ void main()
 
 	unsigned f = loadTextureMap("./fontmap.png", 16, 16);
 
-	GameState game = GameState(f, W, H);
+	GameState game = GameState(title,f, W, H);
 	game.play();
 	MenuState menu = MenuState(f, W, H);
 
@@ -67,7 +67,7 @@ void main()
 		case EState::ENTER_GAME:
 			game.play();
 		case EState::GAME:
-			game.tick(deltaTime, movement, cam);
+			game.tick(deltaTime, cam);
 			game.draw();
 			state = game.next();
 			break;
@@ -92,7 +92,7 @@ void main()
 		drawString(f, ypos.c_str(), 175, 20, 12, 12, 0, '\0', WHITE);
 		
 		//printf("%f, %f\n", cursorPos[0].x, cursorPos[0].y);
-		printf("%f, %f\n", cam.x, cam.y);
+		//printf("%f, %f\n", cam.x, cam.y);
 		
 
 		if (getKey('E'))

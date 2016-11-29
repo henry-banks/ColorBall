@@ -145,6 +145,11 @@ float angleBetween(const vec2 & rhs, const vec2 & lhs)
 	return out;
 }
 
+vec2 delta(const vec2 & rhs, const vec2 & lhs)
+{
+	return vec2{lhs.x - rhs.x, lhs.y - rhs.y};
+}
+
 vec2 perp(const vec2 & v)
 {
 	vec2 out;

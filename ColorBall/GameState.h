@@ -6,6 +6,7 @@
 #include "Asteroid.h"
 #include "PlayerBall.h"
 #include "CaptureBall.h"
+#include <string>
 
 #include <Windows.h>
 /*
@@ -37,6 +38,7 @@ class GameState : public State
 public:
 	GameState(float W_a = 600, float H_a = 600);
 	GameState(unsigned inFont, float W_a = 600, float H_a = 600);
+	GameState(std::string inTitle, unsigned inFont, float W_a = 600, float H_a = 600);
 	~GameState();
 
 	PlayerSprite	player;
@@ -47,16 +49,20 @@ public:
 	//Used to lock cursor to screen
 	bool cursorLock;
 	bool isWin;
-	float lockTimer; //Timer to prevent toggle spam
+	float lockTimer;	//Timer to prevent toggle spam
 	float W, H;
+	std::string title;	//No title should be over 100 letters
+	vec2 movement;		//Used to move cursor
 
+	HWND hwnd;
+	RECT rect;
 	POINT cursorPos[1];
 	bool releaseCursor;
 	float releaseTimer;
 
 	void play();
 	void tick();
-	void tick(float deltaTime, const vec2 &movement, vec2 &cam);
+	void tick(float deltaTime, vec2 &cam);
 	void draw();
 
 	EState next();

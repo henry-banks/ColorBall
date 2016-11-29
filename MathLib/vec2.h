@@ -41,6 +41,8 @@ vec2 normalize(const vec2 &v);
 float dotProd(const vec2 &rhs, const vec2 &lhs);
 float angleBetween(const vec2 &rhs, const vec2 &lhs);
 
+vec2 delta(const vec2 &rhs, const vec2 &lhs);
+
 //2d only stuff
 vec2 perp(const vec2 &v);
 float angle(const vec2 &v);
