@@ -6,22 +6,26 @@ class Spaceship
 
 	float vertThrust;
 	float horizThrust;
+	float turnThrust;
 
 	float turnSpeed;
 	float breakPower;
 	float stopAction;
 
 	float speed;
-	float maxSpeed;
 public:
 	Spaceship();
 	~Spaceship();
 
-	void doThrust(float val);
+	float maxSpeed;
+	float sprintSpeed;
+
+	void doVert(float val);
+	void doHoriz(float val);
 	void doTurn(float val);
 	void doStop(float val);
 
-	void update(const Transform &trans, RigidBody &rigid);
+	void update(Transform &trans, RigidBody &rigid);
 
 };
 

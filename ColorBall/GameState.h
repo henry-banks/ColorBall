@@ -1,11 +1,11 @@
 #pragma once
 #include "State.h"
 #include "PlayerShip.h"
-#include "PlayerSprite.h"
 #include "Camera.h"
 #include "Asteroid.h"
 #include "PlayerBall.h"
 #include "CaptureBall.h"
+#include "Boundary.h"
 #include <string>
 
 #include <Windows.h>
@@ -39,12 +39,16 @@ public:
 	GameState(float W_a = 600, float H_a = 600);
 	GameState(unsigned inFont, float W_a = 600, float H_a = 600);
 	GameState(std::string inTitle, unsigned inFont, float W_a = 600, float H_a = 600);
+	GameState(vec2 inMin, vec2 inMax, std::string inTitle, unsigned inFont, float W_a = 600, float H_a = 600);
 	~GameState();
 
-	PlayerSprite	player;
+	PlayerShip		player;
 	Camera			camera;
-	PlayerBall		asteroid[2];
+	PlayerBall		ball[2];
 	CaptureBall		cap[4];
+	Boundary		bounds[4];
+	//Defines lower-right(min) and upper-right(max) boundary corners
+	vec2 min, max;
 
 	//Used to lock cursor to screen
 	bool cursorLock;
@@ -55,7 +59,6 @@ public:
 	vec2 movement;		//Used to move cursor
 
 	HWND hwnd;
-	RECT rect;
 	POINT cursorPos[1];
 	bool releaseCursor;
 	float releaseTimer;

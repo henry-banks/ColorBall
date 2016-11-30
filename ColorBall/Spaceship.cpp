@@ -12,12 +12,11 @@ Spaceship::Spaceship()
 	breakPower = 4.0f;
 	stopAction = 0.0f;
 	
-
 	speed = 500;
 	maxSpeed = 1000;
+	sprintSpeed = 3000;
 
-	turnSpeed = 20.f;
-	
+	turnSpeed = .2f;	
 }
 
 
@@ -25,14 +24,19 @@ Spaceship::~Spaceship()
 {
 }
 
-void Spaceship::doThrust(float val)
+void Spaceship::doVert(float val)
 {
-	vertThrust += val;
+	vertThrust = val;
+}
+
+void Spaceship::doHoriz(float val)
+{
+	horizThrust += val;
 }
 
 void Spaceship::doTurn(float val)
 {
-	horizThrust += val * 10;
+	turnThrust = val;
 }
 
 void Spaceship::doStop(float val)
@@ -41,13 +45,25 @@ void Spaceship::doStop(float val)
 }
 
 
-void Spaceship::update(const Transform &trans, RigidBody & rigid)
+void Spaceship::update(Transform &trans, RigidBody & rigid)
 {
-	//Move in the direction the transform is facing
-	rigid.addForce(trans.getUp() * speed * vertThrust);
-	rigid.addTorque(turnSpeed * horizThrust);
+
+	//printf("%f, %f - %f\n", roundf(abs(rigid.velocity.x)), roundf(abs(rigid.velocity.y)), roundf(abs(rigid.velocity.x + rigid.velocity.y)));
+	//If the ship isn't moving too fast, move in the direction the transform is facing
+	if(abs(rigid.velocity.x + rigid.velocity.y) < maxSpeed && abs(rigid.velocity.x) < maxSpeed && abs(rigid.velocity.y) < maxSpeed)
+	{ 
+		rigid.addForce(trans.getUp() * speed * vertThrust);
+		rigid.addForce(-perp(trans.getUp()) * speed * horizThrust);
+	}
+		
+
+	//More direct turning, less space-y but more suited to the game
+	trans.rotAngle += turnThrust * turnSpeed;
+
+	//rigid.addTorque(turnThrust * turnSpeed);
 
 	//Stop ship (in 1 sec)
+	rigid.addForce(-rigid.velocity);// *breakPower * stopAction);
 	rigid.addForce(-rigid.velocity * breakPower * stopAction);
 	//rigid.addTorque(-rigid.angVel * breakPower * stopAction);
 	//std::cout << -rigid.angVel * breakPower * stopAction << "\n";

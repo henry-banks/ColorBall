@@ -8,6 +8,9 @@ PlayerShip::PlayerShip()
 	collider = Collider(hullVerts, 3);
 
 	transform.scl = vec2{ 10,10 };
+
+	rigidbody.mass = 5;
+	rigidbody.angDrag = 5;
 }
 
 
@@ -15,17 +18,17 @@ PlayerShip::~PlayerShip()
 {
 }
 
-void PlayerShip::update(float deltaTime, GameState & gs)
+void PlayerShip::update(float deltaTime, float turnAngle)
 {
-	controller.update(spaceship);
+	controller.update(spaceship, turnAngle);
 	spaceship.update(transform, rigidbody);
 	rigidbody.integrate(transform, deltaTime);
 }
 
 void PlayerShip::draw(const mat3 &camera)
 {
-	transform.debugDraw(camera);
-	rigidbody.debugDraw(transform, camera);
+	//transform.debugDraw(camera);
+	//rigidbody.debugDraw(transform, camera);
 
-	collider.DebugDraw(camera, transform);
+	collider.Draw(camera, transform, team.color);
 }

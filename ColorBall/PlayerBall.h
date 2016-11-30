@@ -1,6 +1,6 @@
 #pragma once
 #include "Collider.h"
-#include "PlayerSprite.h"
+#include "PlayerShip.h"
 class PlayerBall
 {
 public:

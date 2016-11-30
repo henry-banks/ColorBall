@@ -57,6 +57,6 @@ void CaptureBall::draw(const mat3 & camera)
 	mat3 glob = camera * transform.getGlobalTransform();
 
 	spd::drawCircle(glob * Circle{ 0,0,2 }, team.color);
-	//collider.Draw(camera, transform, team.color);
+	collider.Draw(camera, transform, team.color);
 	//rigidbody.debugDraw(transform, camera);
 }

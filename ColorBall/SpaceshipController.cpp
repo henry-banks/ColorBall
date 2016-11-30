@@ -12,13 +12,14 @@ using namespace sfw;
 //	CTR_BREAK = ' ';
 //}
 
-SpaceshipController::SpaceshipController(unsigned aCTR_LEFT, unsigned aCTR_RIGHT, unsigned aCTR_UP, unsigned aCTR_DOWN, unsigned aCTR_BREAK)
+SpaceshipController::SpaceshipController(unsigned aCTR_LEFT, unsigned aCTR_RIGHT, unsigned aCTR_UP, unsigned aCTR_DOWN, unsigned aCTR_BREAK, unsigned aCTR_SPRINT)
 {
 	CTR_LEFT = aCTR_LEFT;
 	CTR_RIGHT = aCTR_RIGHT;
 	CTR_UP = aCTR_UP;
 	CTR_DOWN = aCTR_DOWN;
 	CTR_BREAK = aCTR_BREAK;
+	CTR_SPRINT = aCTR_SPRINT;
 }
 
 
@@ -26,7 +27,7 @@ SpaceshipController::~SpaceshipController()
 {
 }
 
-void SpaceshipController::update(Spaceship & ship)
+void SpaceshipController::update(Spaceship & ship, float turnAngle)
 {
 	float hInput = 0;
 	hInput += getKey(CTR_LEFT);
@@ -38,7 +39,11 @@ void SpaceshipController::update(Spaceship & ship)
 
 	float bInput = getKey(CTR_BREAK);
 
-	ship.doTurn(hInput);
-	ship.doThrust(vInput);
+	if (getKey(CTR_SPRINT))
+		ship.maxSpeed = ship.sprintSpeed;
+
+	ship.doHoriz(hInput);
+	ship.doVert(vInput);
+	ship.doTurn(turnAngle);
 	ship.doStop(bInput);
 }

@@ -78,12 +78,6 @@
     <ClCompile Include="Collider.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerSprite.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SpriteController.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="PlayerBall.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -104,6 +98,9 @@
     </ClCompile>
     <ClCompile Include="MenuButton.cpp">
       <Filter>Source Files\Buttons</Filter>
+    </ClCompile>
+    <ClCompile Include="Boundary.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -149,12 +146,6 @@
     <ClInclude Include="Collider.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerSprite.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SpriteController.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="PlayerBall.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -178,6 +169,9 @@
     </ClInclude>
     <ClInclude Include="MenuButton.h">
       <Filter>Header Files\Buttons</Filter>
+    </ClInclude>
+    <ClInclude Include="Boundary.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

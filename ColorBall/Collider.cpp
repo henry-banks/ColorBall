@@ -40,6 +40,12 @@ void Collider::DebugDraw(const mat3 & t, const Transform & trans)
 	drawAABB(glob * box, RED);
 	drawHull(glob * hull, BLUE);
 
+
+	for (int i = 0; i < hull.size; ++i)
+	{
+		vec2 transf = (glob * vec3{ hull.vertices[i].x, hull.vertices[i].y, 1 }).xy;
+		drawCircle({ transf.x, transf.y, 3.f }, WHITE);
+	}
 }
 
 void Collider::Draw(const mat3 & t, const Transform & trans, unsigned color)

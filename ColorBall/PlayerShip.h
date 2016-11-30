@@ -5,6 +5,12 @@
 #include "SpaceshipController.h"
 #include "Spaceship.h"
 
+struct Team
+{
+	unsigned color = 0xffffffff;
+	int teamNum = 0;
+};
+
 class PlayerShip
 {
 public:
@@ -16,10 +22,11 @@ public:
 	RigidBody			rigidbody;
 	SpaceshipController	controller;
 	Spaceship			spaceship;
+
+	Team team;
 	float health;
 
-
-	void update(float deltaTime, class GameState &gs);
+	void update(float deltaTime, float turnAngle);
 	void draw(const mat3 &camera);
 };
 

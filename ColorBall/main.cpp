@@ -25,8 +25,8 @@ void main()
 	SetCursorPos(W / 2, H / 2);
 
 	unsigned f = loadTextureMap("./fontmap.png", 16, 16);
-
-	GameState game = GameState(title,f, W, H);
+	//
+	GameState game = GameState(vec2{ -100,-100 }, vec2{ 100,100 }, title, f, W, H);
 	game.play();
 	MenuState menu = MenuState(f, W, H);
 
@@ -79,6 +79,7 @@ void main()
 		if (getKey('Q'))
 		{
 			game.player.transform.pos = vec2{ 0,0 };
+			game.player.transform.scl = vec2{ 1,1 }; //TODO: Remove me
 			game.player.rigidbody.velocity = vec2{ 0,0 };
 			movement = vec2{ 0,0 };
 			cam = vec2{ 0,0 };
