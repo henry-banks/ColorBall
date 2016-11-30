@@ -46,7 +46,7 @@ public:
 	Camera			camera;
 	PlayerBall		ball[2];
 	CaptureBall		cap[4];
-	Boundary		bounds[4];
+	Collider		bounds[4];
 	//Defines lower-right(min) and upper-right(max) boundary corners
 	vec2 min, max;
 

@@ -7,7 +7,7 @@ PlayerShip::PlayerShip()
 	vec2 hullVerts[] = { {0,3},{-2,-3},{2,-3} };
 	collider = Collider(hullVerts, 3);
 
-	transform.scl = vec2{ 10,10 };
+	transform.scl = vec2{ 4,4 };
 
 	rigidbody.mass = 5;
 	rigidbody.angDrag = 5;

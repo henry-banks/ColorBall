@@ -1,4 +1,5 @@
 #include "ObjectCollision.h"
+#include "flops.h"
 
 void PlayerAsteroidCollision(PlayerShip & player, Asteroid & as)
 {
@@ -50,4 +51,21 @@ void BoundCollision(Transform &trans, RigidBody & rigid, Collider &col, Boundary
 	//	rigid.velocity.x = -rigid.velocity.x;
 	//else
 	//	rigid.velocity.y = -rigid.velocity.y;
+}
+
+void StaticBoundCollision(int W, int H, Transform & trans, RigidBody & rigid)
+{
+	if (trans.pos.x > W / 2 || trans.pos.x < (W / 2) * -1)
+	{
+		rigid.velocity.x = -rigid.velocity.x;
+		trans.rotAngle = perpAngle(trans.rotAngle); //angle(perp(trans.pos));
+	}
+		
+	
+	if (trans.pos.y > H / 2 || trans.pos.y < (H / 2) * -1)
+	{
+		rigid.velocity.y = -rigid.velocity.y;
+		trans.rotAngle = perpAngle(trans.rotAngle); //angle(perp(trans.pos));
+	}
+		
 }

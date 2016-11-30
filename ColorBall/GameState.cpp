@@ -14,6 +14,9 @@ GameState::GameState(float W_a, float H_a)
 	min = vec2{ 0,0 };
 	max = vec2{ W,H };
 
+
+
+	/*
 	//Lower bound
 	bounds[0] = Boundary(min.x, min.y, max.x, min.y, false);
 	//Upper bound
@@ -24,6 +27,7 @@ GameState::GameState(float W_a, float H_a)
 	//bounds[2] = Boundary(min.x, min.y, min.x, max.y, true);
 	////Left bound
 	//bounds[3] = Boundary(max.x, min.y, max.x, max.y, true);
+	*/
 
 	releaseCursor = false;
 	releaseTimer = 0.f;
@@ -41,6 +45,7 @@ GameState::GameState(unsigned inFont, float W_a, float H_a)
 	min = vec2{ 0,0 };
 	max = vec2{ W,H };
 
+	/*
 	//Lower bound
 	bounds[0] = Boundary(min.x, min.y, max.x, min.y, false);
 	//Upper bound
@@ -49,6 +54,7 @@ GameState::GameState(unsigned inFont, float W_a, float H_a)
 	bounds[2] = Boundary(min.x, min.y, min.x, max.y, true);
 	//Left bound
 	bounds[3] = Boundary(max.x, min.y, max.x, max.y, true);
+	*/
 
 	releaseCursor = false;
 	releaseTimer = 0.f;
@@ -67,6 +73,7 @@ GameState::GameState(std::string inTitle, unsigned inFont, float W_a, float H_a)
 	min = vec2{ 0 - (W/2),0 - (H/2) };
 	max = vec2{ W - (W / 2),H - (H / 2) };
 
+	/*
 	//Lower bound
 	bounds[0] = Boundary(min.x, min.y, max.x, min.y, false);
 	//Upper bound
@@ -75,6 +82,7 @@ GameState::GameState(std::string inTitle, unsigned inFont, float W_a, float H_a)
 	bounds[2] = Boundary(min.x, min.y, min.x, max.y, true);
 	//Left bound
 	bounds[3] = Boundary(max.x, min.y, max.x, max.y, true);
+	*/
 
 	releaseCursor = false;
 	releaseTimer = 0.f;
@@ -94,6 +102,7 @@ GameState::GameState(vec2 inMin, vec2 inMax, std::string inTitle, unsigned inFon
 	min = inMin;
 	max = inMax;
 	
+	/*
 	//Upper bound
 	bounds[0] = Boundary(min.x, max.y, max.x, max.y, false);
 	//Lower bound
@@ -102,6 +111,7 @@ GameState::GameState(vec2 inMin, vec2 inMax, std::string inTitle, unsigned inFon
 	bounds[2] = Boundary(min.x, min.y, min.x, max.y, true);
 	//Right bound
 	bounds[3] = Boundary(max.x, min.y, max.x, max.y, true);
+	*/
 
 	releaseCursor = false;
 	releaseTimer = 0.f;
@@ -243,16 +253,26 @@ void GameState::tick(float deltaTime, vec2 &cam)
 			BallPointCollision(ball[j], cap[i]);
 	}
 
+	//Boundary Collision(static)
+	StaticBoundCollision(W, H, player.transform, player.rigidbody);
+	for (int i = 0; i < 2; i++)
+		StaticBoundCollision(W, H, ball[i].transform, ball[i].rigidbody);
+	for (int i = 0; i < 4; i++)
+		StaticBoundCollision(W, H, cap[i].transform, cap[i].rigidbody);
+
+	/*
 	for (int i = 0; i < 4; i++)
 	{
-		BoundCollision(player.transform, player.rigidbody, player.collider, bounds[i]);
+		//BoundCollision(player.transform, player.rigidbody, player.collider, bounds[i]);
 
 		for (int j = 0; j < 2; j++)
-			BoundCollision(ball[j].transform, ball[j].rigidbody, ball[j].collider, bounds[i]);
+			//BoundCollision(ball[j].transform, ball[j].rigidbody, ball[j].collider, bounds[i]);
 
 		for (int j = 0; j < 4; j++)
-			BoundCollision(cap[j].transform, cap[j].rigidbody, cap[j].collider, bounds[i]);
+			//BoundCollision(cap[j].transform, cap[j].rigidbody, cap[j].collider, bounds[i]);
 	}
+	*/
+
 	////////////////////////////
 	//Actual updating of things
 	////////////////////////////
@@ -286,7 +306,7 @@ void GameState::draw()
 	for (int i = 0; i < 4; i++)
 	{
 		cap[i].draw(cam);
-		bounds[i].debugDraw(cam);
+		//bounds[i].Draw(cam, ;
 	}		
 }
 
