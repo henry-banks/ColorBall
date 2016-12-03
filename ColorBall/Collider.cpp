@@ -40,12 +40,6 @@ void Collider::DebugDraw(const mat3 & t, const Transform & trans)
 	drawAABB(glob * box, RED);
 	drawHull(glob * hull, BLUE);
 
-
-	for (int i = 0; i < hull.size; ++i)
-	{
-		vec2 transf = (glob * vec3{ hull.vertices[i].x, hull.vertices[i].y, 1 }).xy;
-		drawCircle({ transf.x, transf.y, 3.f }, WHITE);
-	}
 }
 
 void Collider::Draw(const mat3 & t, const Transform & trans, unsigned color)
@@ -53,6 +47,12 @@ void Collider::Draw(const mat3 & t, const Transform & trans, unsigned color)
 	mat3 glob = t * trans.getGlobalTransform();
 
 	drawHull(glob * hull, color);
+}
+
+void Collider::StaticDraw(const mat3 & t, unsigned color)
+{
+	drawHull(t * hull, color);
+	drawAABB(t*box, color);
 }
 
 CollisionData ColliderCollision(const Transform & aT, const Collider & aC, const Transform & bT, const Collider & bC)

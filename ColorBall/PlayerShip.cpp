@@ -18,9 +18,9 @@ PlayerShip::~PlayerShip()
 {
 }
 
-void PlayerShip::update(float deltaTime, float turnAngle)
+void PlayerShip::update(float deltaTime, float turnAngle, float currentAngle)
 {
-	controller.update(spaceship, turnAngle);
+	controller.update(spaceship, turnAngle, currentAngle);
 	spaceship.update(transform, rigidbody);
 	rigidbody.integrate(transform, deltaTime);
 }

@@ -26,7 +26,7 @@ public:
 	Team team;
 	float health;
 
-	void update(float deltaTime, float turnAngle);
+	void update(float deltaTime, float turnAngle, float currentAngle);
 	void draw(const mat3 &camera);
 };
 

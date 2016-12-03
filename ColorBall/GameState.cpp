@@ -1,5 +1,6 @@
 #include "GameState.h"
 #include "ObjectCollision.h"
+#include "shapedraw.h"
 #include "sfwdraw.h"
 #include <cstdlib>
 #include <ctime>
@@ -11,26 +12,40 @@ GameState::GameState(float W_a, float H_a)
 	W = W_a;
 	H = H_a;
 
+	xBound = yBound = 600;
+
 	min = vec2{ 0,0 };
 	max = vec2{ W,H };
 
-
-
-	/*
-	//Lower bound
-	bounds[0] = Boundary(min.x, min.y, max.x, min.y, false);
-	//Upper bound
-	bounds[1] = Boundary(min.x, max.y, max.x, max.y, false);
-
-	bounds[2] = Boundary(bounds[0].collider.hull.vertices[0].x, bounds[0].collider.hull.vertices[0].y, bounds[0].collider.hull.vertices[0].x, bounds[1].collider.hull.vertices[0].y, true);
-	////Right bound
-	//bounds[2] = Boundary(min.x, min.y, min.x, max.y, true);
-	////Left bound
-	//bounds[3] = Boundary(max.x, min.y, max.x, max.y, true);
-	*/
-
 	releaseCursor = false;
 	releaseTimer = 0.f;
+
+	/*
+	vec2 b1[] = { {xBound, yBound}, {-xBound, yBound} };
+	bounds[0] = Collider( b1, 2 );	//Upper boundary
+
+	vec2 b2[] = { {xBound, -yBound}, {-xBound, -yBound} };
+	bounds[1] = Collider(b2, 2);	//Lower boundary
+
+	vec2 b3[] = { {xBound, yBound}, {xBound, -yBound} };
+	bounds[2] = Collider(b3, 2);	//Right boundary
+
+	vec2 b4[] = { {-xBound, yBound}, {-xBound, -yBound} };
+	bounds[3] = Collider(b4, 2);	//Left boundary
+	*/
+	
+	//Initializing boundaries
+	vec2 b1[] = { {xBound, yBound}, {-xBound, yBound} };
+	bounds[0] = Boundary( b1, true );	//Upper boundary
+
+	vec2 b2[] = { {xBound, -yBound}, {-xBound, -yBound} };
+	bounds[1] = Boundary(b2, false);	//Lower boundary
+
+	vec2 b3[] = { {xBound, yBound}, {xBound, -yBound} };
+	bounds[2] = Boundary(b3, true);	//Right boundary
+
+	vec2 b4[] = { {-xBound, yBound}, {-xBound, -yBound} };
+	bounds[3] = Boundary(b4, false);	//Left boundary
 
 	camera = Camera(W/2, H/2);
 	nextState = EState::GAME;
@@ -42,19 +57,23 @@ GameState::GameState(unsigned inFont, float W_a, float H_a)
 	W = W_a;
 	H = H_a;
 
+	xBound = yBound = 600;
+
 	min = vec2{ 0,0 };
 	max = vec2{ W,H };
 
-	/*
-	//Lower bound
-	bounds[0] = Boundary(min.x, min.y, max.x, min.y, false);
-	//Upper bound
-	bounds[1] = Boundary(min.x, max.y, max.x, max.y, false);
-	//Right bound
-	bounds[2] = Boundary(min.x, min.y, min.x, max.y, true);
-	//Left bound
-	bounds[3] = Boundary(max.x, min.y, max.x, max.y, true);
-	*/
+	//Initializing boundaries
+	vec2 b1[] = { { xBound, yBound },{ -xBound, yBound } };
+	bounds[0] = Boundary(b1, true);	//Upper boundary
+
+	vec2 b2[] = { { xBound, -yBound },{ -xBound, -yBound } };
+	bounds[1] = Boundary(b2, false);	//Lower boundary
+
+	vec2 b3[] = { { xBound, yBound },{ xBound, -yBound } };
+	bounds[2] = Boundary(b3, true);	//Right boundary
+
+	vec2 b4[] = { { -xBound, yBound },{ -xBound, -yBound } };
+	bounds[3] = Boundary(b4, false);	//Left boundary
 
 	releaseCursor = false;
 	releaseTimer = 0.f;
@@ -70,19 +89,23 @@ GameState::GameState(std::string inTitle, unsigned inFont, float W_a, float H_a)
 	W = W_a;
 	H = H_a;
 
+	xBound = yBound = 600;
+
 	min = vec2{ 0 - (W/2),0 - (H/2) };
 	max = vec2{ W - (W / 2),H - (H / 2) };
 
-	/*
-	//Lower bound
-	bounds[0] = Boundary(min.x, min.y, max.x, min.y, false);
-	//Upper bound
-	bounds[1] = Boundary(min.x, max.y, max.x, max.y, false);
-	//Right bound
-	bounds[2] = Boundary(min.x, min.y, min.x, max.y, true);
-	//Left bound
-	bounds[3] = Boundary(max.x, min.y, max.x, max.y, true);
-	*/
+	//Initializing boundaries
+	vec2 b1[] = { { xBound, yBound },{ -xBound, yBound } };
+	bounds[0] = Boundary(b1, true);	//Upper boundary
+
+	vec2 b2[] = { { xBound, -yBound },{ -xBound, -yBound } };
+	bounds[1] = Boundary(b2, false);	//Lower boundary
+
+	vec2 b3[] = { { xBound, yBound },{ xBound, -yBound } };
+	bounds[2] = Boundary(b3, true);	//Right boundary
+
+	vec2 b4[] = { { -xBound, yBound },{ -xBound, -yBound } };
+	bounds[3] = Boundary(b4, false);	//Left boundary
 
 	releaseCursor = false;
 	releaseTimer = 0.f;
@@ -99,19 +122,57 @@ GameState::GameState(vec2 inMin, vec2 inMax, std::string inTitle, unsigned inFon
 	W = W_a;
 	H = H_a;
 
+	xBound = yBound = 600;
+
 	min = inMin;
 	max = inMax;
-	
-	/*
-	//Upper bound
-	bounds[0] = Boundary(min.x, max.y, max.x, max.y, false);
-	//Lower bound
-	bounds[1] = Boundary(min.x, min.y, max.x, min.y, false);
-	//Left bound
-	bounds[2] = Boundary(min.x, min.y, min.x, max.y, true);
-	//Right bound
-	bounds[3] = Boundary(max.x, min.y, max.x, max.y, true);
-	*/
+
+	//Initializing boundaries
+	vec2 b1[] = { { xBound, yBound },{ -xBound, yBound } };
+	bounds[0] = Boundary(b1, true);	//Upper boundary
+
+	vec2 b2[] = { { xBound, -yBound },{ -xBound, -yBound } };
+	bounds[1] = Boundary(b2, false);	//Lower boundary
+
+	vec2 b3[] = { { xBound, yBound },{ xBound, -yBound } };
+	bounds[2] = Boundary(b3, true);	//Right boundary
+
+	vec2 b4[] = { { -xBound, yBound },{ -xBound, -yBound } };
+	bounds[3] = Boundary(b4, false);	//Left boundary
+
+	releaseCursor = false;
+	releaseTimer = 0.f;
+
+	camera = Camera(W / 2, H / 2);
+	nextState = EState::GAME;
+	font = inFont;
+	title = inTitle;
+	movement = { W / 2, H / 2 };
+}
+
+GameState::GameState(vec2 inMin, vec2 inMax, std::string inTitle, unsigned inFont, float W_a, float H_a, float xBound_a, float yBound_a)
+{
+	W = W_a;
+	H = H_a;
+
+	xBound = xBound_a;
+	yBound = yBound_a;
+
+	//Initializing boundaries
+	vec2 b1[] = { { xBound, yBound },{ -xBound, yBound } };
+	bounds[0] = Boundary(b1, true);	//Upper boundary
+
+	vec2 b2[] = { { xBound, -yBound },{ -xBound, -yBound } };
+	bounds[1] = Boundary(b2, false);	//Lower boundary
+
+	vec2 b3[] = { { xBound, yBound },{ xBound, -yBound } };
+	bounds[2] = Boundary(b3, true);	//Right boundary
+
+	vec2 b4[] = { { -xBound, yBound },{ -xBound, -yBound } };
+	bounds[3] = Boundary(b4, false);	//Left boundary
+
+	min = inMin;
+	max = inMax;
 
 	releaseCursor = false;
 	releaseTimer = 0.f;
@@ -140,7 +201,7 @@ void GameState::play()
 	lockTimer = 0.f;
 	releaseTimer = 0.f;
 
-	player.team.color = 0x00e0ef;
+	player.team.color = CYAN;
 	player.team.teamNum = 1;
 
 	player.transform.pos = vec2{ 0,0 };
@@ -201,8 +262,6 @@ void GameState::tick(float deltaTime, vec2 &cam)
 	float midX = rect.left + (W / 2);
 	float midY = rect.top + (H / 2);
 
-	//printf("Left: %d\nRight: %d\nTop: %d\nBottom: %d\n\n", rect.left, rect.right, rect.top, rect.bottom);
-
 	GetCursorPos(cursorPos);
 	float turnAngle = 0;
 
@@ -213,11 +272,9 @@ void GameState::tick(float deltaTime, vec2 &cam)
 		vec2 mid = { midX, midY };
 
 		if (mousePos.x > mid.x)
-			turnAngle = -dist(mid, mousePos); //angle(delta(mid, mousePos));
+			turnAngle = -dist(mid, mousePos);
 		else if (mousePos.x < mid.x)
-			turnAngle = dist(mid, mousePos);//-angle(delta(mid, mousePos));
-
-		//printf("Mid: %f, %f.  Mouse: %f, %f.  %f\n", mid.x, mid.y, mousePos.x, mousePos.y, turnAngle);
+			turnAngle = dist(mid, mousePos);
 
 		SetCursorPos(midX, midY);	
 	}
@@ -236,6 +293,18 @@ void GameState::tick(float deltaTime, vec2 &cam)
 	if (releaseTimer >= 0)
 		releaseTimer -= deltaTime;
 
+
+	///////////////
+	//RESET BUTTON
+	///////////////
+	if (getKey('Q'))
+	{
+		player.transform.pos = vec2{ 0,0 };
+		player.rigidbody.velocity = vec2{ 0,0 };
+		movement = vec2{ 0,0 };
+		cam = vec2{ 0,0 };
+	}
+
 	/////////////////////
 	//Collision Checking
 	/////////////////////
@@ -253,26 +322,20 @@ void GameState::tick(float deltaTime, vec2 &cam)
 			BallPointCollision(ball[j], cap[i]);
 	}
 
-	//Boundary Collision(static)
-	StaticBoundCollision(W, H, player.transform, player.rigidbody);
-	for (int i = 0; i < 2; i++)
-		StaticBoundCollision(W, H, ball[i].transform, ball[i].rigidbody);
-	for (int i = 0; i < 4; i++)
-		StaticBoundCollision(W, H, cap[i].transform, cap[i].rigidbody);
-
-	/*
+	//Boundary Collision
 	for (int i = 0; i < 4; i++)
 	{
-		//BoundCollision(player.transform, player.rigidbody, player.collider, bounds[i]);
-
+		//StaticBoundCollision(bounds[i], player.transform, player.rigidbody);
+		BoundCollision(player.transform, player.rigidbody, player.collider, bounds[i], .6);
 		for (int j = 0; j < 2; j++)
-			//BoundCollision(ball[j].transform, ball[j].rigidbody, ball[j].collider, bounds[i]);
-
+			BoundCollision(ball[j].transform, ball[j].rigidbody, ball[j].collider, bounds[i], .8);
+			//StaticBoundCollision(bounds[i], ball[i].transform, ball[i].rigidbody);
 		for (int j = 0; j < 4; j++)
-			//BoundCollision(cap[j].transform, cap[j].rigidbody, cap[j].collider, bounds[i]);
-	}
-	*/
-
+			BoundCollision(cap[j].transform, cap[j].rigidbody, cap[j].collider, bounds[i], .8);
+			//StaticBoundCollision(bounds[i], cap[i].transform, cap[i].rigidbody);
+	}	
+	
+	
 	////////////////////////////
 	//Actual updating of things
 	////////////////////////////
@@ -282,7 +345,8 @@ void GameState::tick(float deltaTime, vec2 &cam)
 	for (int i = 0; i < 4; i++)
 		cap[i].update(deltaTime, *this);
 
-	player.update(deltaTime, turnAngle);
+	cam = player.transform.pos;
+	player.update(deltaTime, turnAngle, player.transform.rotAngle);
 	camera.update(deltaTime, cam, *this);
 }
 
@@ -302,12 +366,15 @@ void GameState::draw()
 		ball[i].draw(cam);
 	}
 		
+	printf("%f", fabsf(round(fmodf(player.transform.rotAngle + 90, 360))));
 	printf("\n");
+	
+	//Print boundaries (debug)
 	for (int i = 0; i < 4; i++)
 	{
 		cap[i].draw(cam);
-		//bounds[i].Draw(cam, ;
-	}		
+		bounds[i].collider.StaticDraw(cam, CYAN);
+	}
 }
 
 EState GameState::next()

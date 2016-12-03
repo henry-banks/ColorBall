@@ -40,13 +40,15 @@ public:
 	GameState(unsigned inFont, float W_a = 600, float H_a = 600);
 	GameState(std::string inTitle, unsigned inFont, float W_a = 600, float H_a = 600);
 	GameState(vec2 inMin, vec2 inMax, std::string inTitle, unsigned inFont, float W_a = 600, float H_a = 600);
+	GameState(vec2 inMin, vec2 inMax, std::string inTitle, unsigned inFont, float W_a = 600, float H_a = 600, float xBound_a = 600, float yBound_a = 600);
 	~GameState();
 
 	PlayerShip		player;
 	Camera			camera;
 	PlayerBall		ball[2];
 	CaptureBall		cap[4];
-	Collider		bounds[4];
+	//Collider		bounds[4];
+	Boundary		bounds[4];
 	//Defines lower-right(min) and upper-right(max) boundary corners
 	vec2 min, max;
 
@@ -55,6 +57,8 @@ public:
 	bool isWin;
 	float lockTimer;	//Timer to prevent toggle spam
 	float W, H;
+	//Right-most and upper-most extents of the playing field (not the screen);
+	float xBound, yBound;
 	std::string title;	//No title should be over 100 letters
 	vec2 movement;		//Used to move cursor
 

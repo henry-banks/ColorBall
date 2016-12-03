@@ -1,4 +1,5 @@
 #include "SpaceshipController.h"
+#include <math.h>
 #include "sfwdraw.h"
 
 using namespace sfw;
@@ -27,11 +28,21 @@ SpaceshipController::~SpaceshipController()
 {
 }
 
-void SpaceshipController::update(Spaceship & ship, float turnAngle)
+void SpaceshipController::update(Spaceship & ship, float turnAngle, float currentAngle)
 {
 	float hInput = 0;
-	hInput += getKey(CTR_LEFT);
-	hInput -= getKey(CTR_RIGHT);
+	//Keep the arrow keys pointing to the correct direction when the ship is flipped around
+	if (fmodf(currentAngle + 90, 360) < 180)	//Offset of 90 is required
+	{
+		hInput += getKey(CTR_LEFT);
+		hInput -= getKey(CTR_RIGHT);
+	}
+	else
+	{
+		hInput -= getKey(CTR_LEFT);
+		hInput += getKey(CTR_RIGHT);
+	}
+	
 
 	float vInput = 0;
 	vInput += getKey(CTR_UP);

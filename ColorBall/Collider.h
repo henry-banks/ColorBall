@@ -16,6 +16,7 @@ public:
 
 	void DebugDraw(const mat3 &t, const Transform &trans);
 	void Draw(const mat3 &t, const Transform &trans, unsigned color);
+	void StaticDraw(const mat3 &t, unsigned color);	//Used for drawing boundaries and other static colliders
 };
 
 CollisionData ColliderCollision(const Transform &aT, const Collider &aC,

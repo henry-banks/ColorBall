@@ -12,7 +12,8 @@ public:
 	RigidBody rigidbody;
 	Team team;
 
-	float moveTimer, turnTimer;
+	//float moveTimer;
+	float turnTimer;
 
 	void update(float deltaTime, class GameState &gs);
 	void draw(const mat3 &camera);

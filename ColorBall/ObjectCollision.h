@@ -16,6 +16,6 @@ void BallCollision(PlayerBall &b1, PlayerBall &b2);
 bool BallPointCollision(PlayerBall &ball, CaptureBall &p);
 
 //General collision with boundary
-void BoundCollision(Transform &trans, RigidBody & rigid, Collider &col, Boundary &bound);
-//Pseudo-collision becaquse boundaries are broken
-void StaticBoundCollision(int W, int H, Transform &trans, RigidBody & rigid);
+void BoundCollision(Transform &trans, RigidBody & rigid, Collider &col, Boundary &bound, float bounciness);
+//Pseudo-collision with boundaries
+void StaticBoundCollision(Boundary &col, Transform &trans, RigidBody & rigid);

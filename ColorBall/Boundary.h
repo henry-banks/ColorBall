@@ -10,10 +10,9 @@ public:
 	Boundary(vec2 hullVerts[], bool isVert_a);
 	~Boundary();
 
-	Transform transform;
 	Collider collider;
 	//True if collider borders either left or right side (a vertical boundary)
-	bool isVert;
+	bool isPos;
 
 	void debugDraw(const mat3 &t);
 };

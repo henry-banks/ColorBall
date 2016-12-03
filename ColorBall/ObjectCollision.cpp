@@ -40,32 +40,45 @@ bool BallPointCollision(PlayerBall & ball, CaptureBall & p)
 	return false;
 }
 
-void BoundCollision(Transform &trans, RigidBody & rigid, Collider &col, Boundary & bound)
+void BoundCollision(Transform &trans, RigidBody & rigid, Collider &col, Boundary & bound, float bounciness)
 {
-	StaticResolution(trans, rigid, col, bound.transform, bound.collider);
+	//This is basically a modded version of ColliderCollision and StaticResolution
 
-	//CollisionData out = ColliderCollision(trans, col, bound.transform, bound.collider);
+	CollisionData data;
 
-	////If the boundary goes up and down, switch the x, otherwise switch the y
-	//if (bound.isVert)
-	//	rigid.velocity.x = -rigid.velocity.x;
-	//else
-	//	rigid.velocity.y = -rigid.velocity.y;
+	//may have to multiply bound's box by the global transform...
+	data = boxCollision(trans.getGlobalTransform() * col.box,
+		bound.collider.box);
+
+	//If below is true, there's probably a collision
+	//So, go on to the more expensive and accurate hull collision
+	if (data.penDepth >= 0)
+		data = HullCollision(trans.getGlobalTransform() * col.hull,
+			bound.collider.hull);
+
+	if (data.penDepth >= 0)
+	{
+		vec2 mtv = data.penDepth * data.colNormal;
+		trans.pos -= mtv;
+
+		rigid.velocity = reflect(rigid.velocity, data.colNormal) * bounciness;
+	}
 }
 
-void StaticBoundCollision(int W, int H, Transform & trans, RigidBody & rigid)
+void StaticBoundCollision(Boundary &col, Transform & trans, RigidBody & rigid)
 {
-	if (trans.pos.x > W / 2 || trans.pos.x < (W / 2) * -1)
+	AABB &b = col.collider.box;	//Shortcut
+
+	if ((trans.pos.x >= b.max().x && col.isPos) || (trans.pos.x <= b.min().x && !col.isPos))
 	{
 		rigid.velocity.x = -rigid.velocity.x;
-		trans.rotAngle = perpAngle(trans.rotAngle); //angle(perp(trans.pos));
+		//trans.rotAngle = perpAngle(trans.rotAngle); //angle(perp(trans.pos));
 	}
-		
-	
-	if (trans.pos.y > H / 2 || trans.pos.y < (H / 2) * -1)
+
+	if ((trans.pos.x >= b.max().y && col.isPos) || (trans.pos.x <= b.min().y && !col.isPos))
 	{
 		rigid.velocity.y = -rigid.velocity.y;
-		trans.rotAngle = perpAngle(trans.rotAngle); //angle(perp(trans.pos));
+		//trans.rotAngle = perpAngle(trans.rotAngle); //angle(perp(trans.pos));
 	}
-		
+
 }

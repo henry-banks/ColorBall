@@ -16,6 +16,6 @@ public:
 	*ship: The ship to update
 	*turnAngle: The angle that the ship turns this turn.  Generated in GameState
 	*/
-	void update(Spaceship &ship, float turnAngle);
+	void update(Spaceship &ship, float turnAngle, float currentAngle);
 };
 
