@@ -123,6 +123,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AboutState.cpp" />
     <ClCompile Include="Asteroid.cpp" />
     <ClCompile Include="Boundary.cpp" />
     <ClCompile Include="Button.cpp" />
@@ -134,6 +135,7 @@
     <ClCompile Include="MenuButton.cpp" />
     <ClCompile Include="MenuState.cpp" />
     <ClCompile Include="ObjectCollision.cpp" />
+    <ClCompile Include="OptionState.cpp" />
     <ClCompile Include="PlanetMotor.cpp" />
     <ClCompile Include="PlanetRender.cpp" />
     <ClCompile Include="PlayerBall.cpp" />
@@ -148,16 +150,19 @@
     <ClCompile Include="Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AboutState.h" />
     <ClInclude Include="Asteroid.h" />
     <ClInclude Include="Boundary.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CaptureBall.h" />
     <ClInclude Include="Collider.h" />
+    <ClInclude Include="GameInstance.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="MenuButton.h" />
     <ClInclude Include="MenuState.h" />
     <ClInclude Include="ObjectCollision.h" />
+    <ClInclude Include="OptionState.h" />
     <ClInclude Include="PlanetMotor.h" />
     <ClInclude Include="PlanetRender.h" />
     <ClInclude Include="PlayerBall.h" />

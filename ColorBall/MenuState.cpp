@@ -16,8 +16,9 @@ MenuState::MenuState(unsigned inFont, int W_a, int H_a)
 	nextState = EState::MENU;
 
 	playButton = MenuButton(font, W / 2 - 100, H - 250, 200, 50, WHITE, "Play", EState::ENTER_GAME);
-	aboutButton = MenuButton(font, W / 2 - 100, H - 325, 200, 50, WHITE, "About", EState::MENU);
-	quitButton = MenuButton(font, W / 2 - 100, H - 400, 200, 50, WHITE, "Quit", EState::TERMINATE);
+	aboutButton = MenuButton(font, W / 2 - 100, H - 325, 200, 50, WHITE, "About", EState::ENTER_ABOUT);
+	optionButton = MenuButton(font, W / 2 - 100, H - 400, 200, 50, WHITE, "Options", EState::OPTION);
+	quitButton = MenuButton(font, W / 2 - 100, H - 475, 200, 50, WHITE, "Quit", EState::TERMINATE);
 }
 
 MenuState::~MenuState()
@@ -33,6 +34,7 @@ void MenuState::tick()
 {
 	playButton.tick();
 	aboutButton.tick();
+	optionButton.tick();
 	quitButton.tick();
 }
 
@@ -42,6 +44,7 @@ void MenuState::draw()
 
 	playButton.draw();
 	aboutButton.draw();
+	optionButton.draw();
 	quitButton.draw();
 
 	cursorDraw();
@@ -58,6 +61,11 @@ EState MenuState::next()
 	{
 		aboutButton.isClicked = false;
 		nextState = aboutButton.next();
+	}
+	else if (optionButton.isClicked)
+	{
+		optionButton.isClicked = false;
+		nextState = optionButton.next();
 	}
 	else if (quitButton.isClicked)
 	{

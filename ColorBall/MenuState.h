@@ -9,6 +9,7 @@ class MenuState : public State
 {
 	MenuButton playButton;
 	MenuButton aboutButton;
+	MenuButton optionButton;
 	MenuButton quitButton;
 
 public:

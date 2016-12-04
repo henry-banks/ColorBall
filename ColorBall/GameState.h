@@ -6,9 +6,14 @@
 #include "PlayerBall.h"
 #include "CaptureBall.h"
 #include "Boundary.h"
+#include "GameInstance.h"
+
 #include <string>
+#include <vector>
 
 #include <Windows.h>
+
+using namespace std;
 /*
 	INIT(ialize)
 		- Called at application start
@@ -35,39 +40,40 @@
 
 class GameState : public State
 {
+	//Jamming this into an init function to tidy up the constructors
+	void baseInit(int W_a, int H_a, int xBound_a, int yBound_a);
+
 public:
-	GameState(float W_a = 600, float H_a = 600);
-	GameState(unsigned inFont, float W_a = 600, float H_a = 600);
-	GameState(std::string inTitle, unsigned inFont, float W_a = 600, float H_a = 600);
-	GameState(vec2 inMin, vec2 inMax, std::string inTitle, unsigned inFont, float W_a = 600, float H_a = 600);
-	GameState(vec2 inMin, vec2 inMax, std::string inTitle, unsigned inFont, float W_a = 600, float H_a = 600, float xBound_a = 600, float yBound_a = 600);
+	GameState(int W_a = 600, int H_a = 600);
+	GameState(unsigned inFont, int W_a = 600, int H_a = 600);
+	GameState(std::string inTitle, unsigned inFont, int W_a = 600, int H_a = 600);
+	GameState(std::string inTitle, unsigned inFont, int W_a = 600, int H_a = 600, int xBound_a = 600, int yBound_a = 600);
 	~GameState();
 
-	PlayerShip		player;
-	Camera			camera;
-	PlayerBall		ball[2];
-	CaptureBall		cap[4];
-	//Collider		bounds[4];
-	Boundary		bounds[4];
-	//Defines lower-right(min) and upper-right(max) boundary corners
-	vec2 min, max;
+	PlayerShip			player;
+	Camera				camera;
+	PlayerBall			ball;
+	vector<CaptureBall>	cap;
+	Boundary			bounds[4];
 
 	//Used to lock cursor to screen
 	bool cursorLock;
 	bool isWin;
 	float lockTimer;	//Timer to prevent toggle spam
-	float W, H;
+	int W, H;
 	//Right-most and upper-most extents of the playing field (not the screen);
-	float xBound, yBound;
-	std::string title;	//No title should be over 100 letters
-	vec2 movement;		//Used to move cursor
+	int xBound, yBound;
+	string title;		//Used for clipping cursor
+	GameInstance instance;
 
 	HWND hwnd;
 	POINT cursorPos[1];
 	bool releaseCursor;
 	float releaseTimer;
 
+	//Required because of base class
 	void play();
+	void play(GameInstance instance);
 	void tick();
 	void tick(float deltaTime, vec2 &cam);
 	void draw();

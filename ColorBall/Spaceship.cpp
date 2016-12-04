@@ -9,7 +9,7 @@ Spaceship::Spaceship()
 {
 	vertThrust = 0;
 	horizThrust = 0;
-	breakPower = 4.0f;
+	breakPower = 10.0f;
 	stopAction = 0.0f;
 	
 	speed = 500;
@@ -63,10 +63,8 @@ void Spaceship::update(Transform &trans, RigidBody & rigid)
 	//rigid.addTorque(turnThrust * turnSpeed);
 
 	//Stop ship (in 1 sec)
-	rigid.addForce(-rigid.velocity);// *breakPower * stopAction);
+	//rigid.addForce(-rigid.velocity);
 	rigid.addForce(-rigid.velocity * breakPower * stopAction);
-	//rigid.addTorque(-rigid.angVel * breakPower * stopAction);
-	//std::cout << -rigid.angVel * breakPower * stopAction << "\n";
 
 	//If the ship is going faster than the max speed...
 	//if (magnitude(rigid.velocity) > maxSpeed)

@@ -16,6 +16,9 @@ void BallCollision(PlayerBall &b1, PlayerBall &b2);
 bool BallPointCollision(PlayerBall &ball, CaptureBall &p);
 
 //General collision with boundary
-void BoundCollision(Transform &trans, RigidBody & rigid, Collider &col, Boundary &bound, float bounciness);
+void BoundCollision(Transform &trans, RigidBody &rigid, Collider &col, Boundary &bound, float bounciness);
+void BoundCollision(PlayerShip &obj, Boundary &bound, float bounciness);
+void BoundCollision(PlayerBall &obj, Boundary &bound, float bounciness);
+void BoundCollision(CaptureBall &obj, Boundary &bound, float bounciness);
 //Pseudo-collision with boundaries
 void StaticBoundCollision(Boundary &col, Transform &trans, RigidBody & rigid);

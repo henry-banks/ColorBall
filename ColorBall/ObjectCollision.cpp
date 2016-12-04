@@ -40,6 +40,7 @@ bool BallPointCollision(PlayerBall & ball, CaptureBall & p)
 	return false;
 }
 
+//Default
 void BoundCollision(Transform &trans, RigidBody & rigid, Collider &col, Boundary & bound, float bounciness)
 {
 	//This is basically a modded version of ColliderCollision and StaticResolution
@@ -62,6 +63,81 @@ void BoundCollision(Transform &trans, RigidBody & rigid, Collider &col, Boundary
 		trans.pos -= mtv;
 
 		rigid.velocity = reflect(rigid.velocity, data.colNormal) * bounciness;
+	}
+}
+
+//PlayerShip
+void BoundCollision(PlayerShip & obj, Boundary & bound, float bounciness)
+{
+	CollisionData data;
+
+	//may have to multiply bound's box by the global transform...
+	data = boxCollision(obj.transform.getGlobalTransform() * obj.collider.box,
+		bound.collider.box);
+
+	//If below is true, there's probably a collision
+	//So, go on to the more expensive and accurate hull collision
+	if (data.penDepth >= 0)
+		data = HullCollision(obj.transform.getGlobalTransform() * obj.collider.hull,
+			bound.collider.hull);
+
+	if (data.penDepth >= 0)
+	{
+		vec2 mtv = data.penDepth * data.colNormal;
+		obj.transform.pos -= mtv;
+
+		obj.rigidbody.velocity = reflect(obj.rigidbody.velocity, data.colNormal) * bounciness;
+		//obj.transform.rotAngle *= -1;
+	}
+}
+
+//PlayerBall
+void BoundCollision(PlayerBall & obj, Boundary & bound, float bounciness)
+{
+	CollisionData data;
+
+	//may have to multiply bound's box by the global transform...
+	data = boxCollision(obj.transform.getGlobalTransform() * obj.collider.box,
+		bound.collider.box);
+
+	//If below is true, there's probably a collision
+	//So, go on to the more expensive and accurate hull collision
+	if (data.penDepth >= 0)
+		data = HullCollision(obj.transform.getGlobalTransform() * obj.collider.hull,
+			bound.collider.hull);
+
+	if (data.penDepth >= 0)
+	{
+		vec2 mtv = data.penDepth * data.colNormal;
+		obj.transform.pos -= mtv;
+
+		obj.rigidbody.velocity = reflect(obj.rigidbody.velocity, data.colNormal) * bounciness;
+		obj.transform.rotAngle = -obj.transform.rotAngle;
+	}
+}
+
+//CaptureBall
+void BoundCollision(CaptureBall & obj, Boundary & bound, float bounciness)
+{
+	CollisionData data;
+
+	//may have to multiply bound's box by the global transform...
+	data = boxCollision(obj.transform.getGlobalTransform() * obj.collider.box,
+		bound.collider.box);
+
+	//If below is true, there's probably a collision
+	//So, go on to the more expensive and accurate hull collision
+	if (data.penDepth >= 0)
+		data = HullCollision(obj.transform.getGlobalTransform() * obj.collider.hull,
+			bound.collider.hull);
+
+	if (data.penDepth >= 0)
+	{
+		vec2 mtv = data.penDepth * data.colNormal;
+		obj.transform.pos -= mtv;
+
+		obj.rigidbody.velocity = reflect(obj.rigidbody.velocity, data.colNormal) * bounciness;
+		obj.transform.rotAngle += obj.transform.rotAngle/2;	//Math may need adjustment, seems to work fine right now
 	}
 }
 

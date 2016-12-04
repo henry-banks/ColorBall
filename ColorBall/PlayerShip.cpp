@@ -10,6 +10,7 @@ PlayerShip::PlayerShip()
 	transform.scl = vec2{ 4,4 };
 
 	rigidbody.mass = 5;
+	rigidbody.drag = 1;
 	rigidbody.angDrag = 5;
 }
 
@@ -27,7 +28,6 @@ void PlayerShip::update(float deltaTime, float turnAngle, float currentAngle)
 
 void PlayerShip::draw(const mat3 &camera)
 {
-	//transform.debugDraw(camera);
 	//rigidbody.debugDraw(transform, camera);
 
 	collider.Draw(camera, transform, team.color);

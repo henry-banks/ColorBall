@@ -3,8 +3,11 @@
 #include "PlayerShip.h"
 class CaptureBall
 {
+	//For easy value adjustment
+	void baseInit();
 public:
 	CaptureBall();
+	CaptureBall(int xBound, int yBound);
 	~CaptureBall();
 
 	Collider collider;

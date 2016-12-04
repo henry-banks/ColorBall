@@ -51,7 +51,11 @@ void SpaceshipController::update(Spaceship & ship, float turnAngle, float curren
 	float bInput = getKey(CTR_BREAK);
 
 	if (getKey(CTR_SPRINT))
+	{
 		ship.maxSpeed = ship.sprintSpeed;
+		vInput *= 3;	//Actually speed the ship up
+	}
+		
 
 	ship.doHoriz(hInput);
 	ship.doVert(vInput);
