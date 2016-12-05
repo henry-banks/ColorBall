@@ -9,6 +9,7 @@
 #include "AboutState.h"
 #include "OptionState.h"
 #include "GameInstance.h"
+#include "EndState.h"
 #include "flops.h"
 
 //Make sure Windows.h is LAST
@@ -33,9 +34,11 @@ void main()
 	
 	GameInstance instance;
 
-	GameState game = GameState(title, f, W, H, 500, 500);
-	MenuState menu = MenuState(f, W, H);
+	GameState game = GameState(title, f, W, H);
+	MenuState menu = MenuState(instance, W, H);
 	AboutState about = AboutState(f, cursor, clickedCursor, W, H);
+	OptionState option = OptionState(instance, f, cursor, clickedCursor, W, H);
+	EndState end = EndState(W, H);
 
 	EState state = EState::ENTER_MENU;
 
@@ -48,8 +51,11 @@ void main()
 	{
 		float deltaTime = getDeltaTime();
 
+		//Big ol' state machine
 		switch (state)
 		{
+		case EXIT_OPTION:
+			instance = option.getInstance();
 		case ENTER_MENU:
 			menu.play();
 		case MENU:
@@ -66,12 +72,28 @@ void main()
 			state = about.next();
 			break;
 
+		case ENTER_OPTION:
+			option.play(instance);
+		case OPTION:
+			option.tick(deltaTime);
+			option.draw();
+			state = option.next();
+			break;
+
 		case ENTER_GAME:
 			game.play(instance);
 		case GAME:
 			game.tick(deltaTime, cam);
 			game.draw();
 			state = game.next();
+			break;
+
+		case ENTER_END:
+			end.play(instance, game.isWin);
+		case END:
+			end.tick();
+			end.draw();
+			state = end.next();
 			break;
 
 		case TERMINATE:
@@ -84,10 +106,6 @@ void main()
 		{
 			isExit = true;
 		}
-
-		if (game.isWin)
-			drawString(f, "YOU WON", W - W / 2, H /2 , 32, 32, 0, '\0', WHITE);
-
 	}
 
 	termContext();

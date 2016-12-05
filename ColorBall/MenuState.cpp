@@ -8,16 +8,19 @@ MenuState::MenuState()
 {
 }
 
-MenuState::MenuState(unsigned inFont, int W_a, int H_a)
+MenuState::MenuState(const GameInstance &instance, int W_a, int H_a)
 {
-	font = inFont;
+	font = instance.font;
+	cursor = instance.cursor;
+	clickedCursor = instance.clickedCursor;
+
 	W = W_a;
 	H = H_a;
 	nextState = EState::MENU;
 
 	playButton = MenuButton(font, W / 2 - 100, H - 250, 200, 50, WHITE, "Play", EState::ENTER_GAME);
 	aboutButton = MenuButton(font, W / 2 - 100, H - 325, 200, 50, WHITE, "About", EState::ENTER_ABOUT);
-	optionButton = MenuButton(font, W / 2 - 100, H - 400, 200, 50, WHITE, "Options", EState::OPTION);
+	optionButton = MenuButton(font, W / 2 - 100, H - 400, 200, 50, WHITE, "Options", EState::ENTER_OPTION);
 	quitButton = MenuButton(font, W / 2 - 100, H - 475, 200, 50, WHITE, "Quit", EState::TERMINATE);
 }
 
@@ -47,7 +50,7 @@ void MenuState::draw()
 	optionButton.draw();
 	quitButton.draw();
 
-	cursorDraw();
+	cursorDraw(cursor, clickedCursor);
 }
 
 EState MenuState::next()

@@ -2,7 +2,7 @@
 
 
 
-MenuButton::MenuButton()
+MenuButton::MenuButton() : Button()
 {
 	isClicked = false;
 	//Default to quit

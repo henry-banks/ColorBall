@@ -32,7 +32,7 @@ void SpaceshipController::update(Spaceship & ship, float turnAngle, float curren
 {
 	float hInput = 0;
 	//Keep the arrow keys pointing to the correct direction when the ship is flipped around
-	if (fmodf(currentAngle + 90, 360) < 180)	//Offset of 90 is required
+	if (fabsf(fmodf(currentAngle + 90, 360) < 180))	//Offset of 90 is required
 	{
 		hInput += getKey(CTR_LEFT);
 		hInput -= getKey(CTR_RIGHT);

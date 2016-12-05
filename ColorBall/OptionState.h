@@ -1,19 +1,41 @@
 #pragma once
 #include "State.h"
 #include "MenuButton.h"
+#include "OptionNum.h"
+#include "GameInstance.h"
 class OptionState :
 	public State
 {
-	int font;
+	unsigned font;
 	int cursor, clickedCursor;
+	int W, H;
+
+	OptionNum ballOpt;
+	OptionNum widthOpt, heightOpt;
+	OptionNum timerOpt;
 
 	MenuButton confirmButton;
 	MenuButton cancelButton;
-	//Color buttons are the most basic buttons so I'm using one of those for the 'reset to deafult' button
-	//ColorButton DefaultButton;
+	MenuButton defaultButton;	//Not actually a menu button, just resets values to default.
+
+	GameInstance instance;
 
 public:
-	OptionState();
+	OptionState(GameInstance inInstance, int inFont, int inCursor, int inClickedCursor, int W_a, int H_a);
 	~OptionState();
+
+	//Activation
+	void play();
+	void play(GameInstance inInstance);
+
+	//Update
+	void draw();
+	void tick();
+	void tick(float deltaTime);
+
+	void apply();
+	GameInstance getInstance();
+
+	EState next();
 };
 

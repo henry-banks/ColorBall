@@ -43,11 +43,11 @@ class GameState : public State
 	//Jamming this into an init function to tidy up the constructors
 	void baseInit(int W_a, int H_a, int xBound_a, int yBound_a);
 
+	float timeLimit, currentTime;
+	int points;	//How many balls you have captured
+
 public:
-	GameState(int W_a = 600, int H_a = 600);
-	GameState(unsigned inFont, int W_a = 600, int H_a = 600);
 	GameState(std::string inTitle, unsigned inFont, int W_a = 600, int H_a = 600);
-	GameState(std::string inTitle, unsigned inFont, int W_a = 600, int H_a = 600, int xBound_a = 600, int yBound_a = 600);
 	~GameState();
 
 	PlayerShip			player;
@@ -73,7 +73,7 @@ public:
 
 	//Required because of base class
 	void play();
-	void play(GameInstance instance);
+	void play(GameInstance inInstance);
 	void tick();
 	void tick(float deltaTime, vec2 &cam);
 	void draw();

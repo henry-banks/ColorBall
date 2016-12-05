@@ -1,4 +1,4 @@
-#include "GameState.h"
+﻿#include "GameState.h"
 #include "ObjectCollision.h"
 #include "shapedraw.h"
 #include "sfwdraw.h"
@@ -31,27 +31,10 @@ void GameState::baseInit(int W_a, int H_a, int xBound_a, int yBound_a)
 	bounds[3] = Boundary(b4, false);	//Left boundary
 
 	releaseCursor = false;
-	releaseTimer = 0.f;
-}
+	releaseTimer = -1.f;
 
-GameState::GameState(int W_a, int H_a)
-{
-	xBound = yBound = 600;
-	baseInit(W_a, H_a, xBound, yBound);
-	
-	camera = Camera(W/2, H/2);
-	nextState = EState::GAME;
-
-}
-
-GameState::GameState(unsigned inFont, int W_a, int H_a)
-{
-	xBound = yBound = 600;
-	baseInit(W_a, H_a, xBound, yBound);
-
-	camera = Camera(W/2, H/2);
-	nextState = EState::GAME;
-	font = inFont;
+	timeLimit = -2;
+	currentTime = 0;
 }
 
 GameState::GameState(std::string inTitle, unsigned inFont, int W_a, int H_a)
@@ -65,18 +48,6 @@ GameState::GameState(std::string inTitle, unsigned inFont, int W_a, int H_a)
 	title = inTitle;
 }
 
-GameState::GameState(std::string inTitle, unsigned inFont, int W_a, int H_a, int xBound_a, int yBound_a)
-{
-	xBound = xBound_a;
-	yBound = yBound_a;
-
-	baseInit(W_a, H_a, xBound, yBound);
-
-	camera = Camera(W / 2, H / 2);
-	nextState = EState::GAME;
-	font = inFont;
-	title = inTitle;
-}
 
 GameState::~GameState()
 {
@@ -87,10 +58,17 @@ void GameState::play()
 	printf("ERROR: INVALID PLAY FUNCTION");
 }
 
-void GameState::play(GameInstance instance)
+void GameState::play(GameInstance inInstance)
 {
 	SetCursorPos(player.transform.pos.x, player.transform.pos.y);
 	GetCursorPos(cursorPos);
+
+	instance = inInstance;
+
+	xBound = instance.width;
+	yBound = instance.height;
+
+	baseInit(W, H, xBound, yBound);
 
 	nextState = EState::GAME;
 
@@ -98,20 +76,24 @@ void GameState::play(GameInstance instance)
 	cursorLock = false;
 	lockTimer = 0.f;
 	releaseTimer = 0.f;
+	points = 0;
+	currentTime = timeLimit = instance.timeLimit * 60;	//Mutiply by 60 because it's measured in minutes
 
-	player.team.color = CYAN;
+	player.team.color = instance.color1;
 	player.team.teamNum = 1;
-
 	player.transform.pos = vec2{ 0,0 };
 	player.transform.rotAngle = 0;
+	player.rigidbody.velocity = vec2{ 0,0 };
 
-	ball.transform.pos = vec2{ -400,-400 };
-	ball.rigidbody.addImpulse(vec2{ 1,1 });
+	ball.transform.pos = player.transform.pos - vec2{ 0, 100 };
+	ball.rigidbody.velocity = vec2{ 0,0 };
 	ball.team = player.team;
 
+	cap.clear();
 	for (int i = 0; i < instance.ballNum; i++)
 	{
 		CaptureBall temp;
+		temp.team;
 		cap.push_back(temp);
 	}
 
@@ -132,10 +114,20 @@ void GameState::tick()
 
 void GameState::tick(float deltaTime, vec2 &cam)
 {
+	/////////////////
+	//Check for loss
+	////////////////
+	if (timeLimit > 0 && currentTime <= 0)
+	{
+		isWin = false;
+		return;
+	}
+	currentTime -= deltaTime;
+
 	///////////////
 	//Check for win
 	///////////////
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < instance.ballNum; i++)
 	{
 		if (cap[i].team.teamNum != player.team.teamNum)
 		{
@@ -180,9 +172,11 @@ void GameState::tick(float deltaTime, vec2 &cam)
 	}
 	
 
-	/////////////////////
+	////////////
+	//Key Inputs
+	////////////
+
 	//Cursor lock/unlock
-	/////////////////////
 	if (getKey('R') && releaseTimer <= 0)
 	{
 		//Flip-flop releaseCursor
@@ -193,11 +187,13 @@ void GameState::tick(float deltaTime, vec2 &cam)
 	if (releaseTimer >= 0)
 		releaseTimer -= deltaTime;
 
-
-	///////////////
-	//RESET BUTTON
-	///////////////
 	if (getKey('Q'))
+	{
+		nextState = ENTER_MENU;
+	}
+
+	//Reset Button
+	if (getKey('P'))
 	{
 		player.transform.pos = vec2{ 0,0 };
 		player.rigidbody.velocity = vec2{ 0,0 };
@@ -207,12 +203,19 @@ void GameState::tick(float deltaTime, vec2 &cam)
 	/////////////////////
 	//Collision Checking
 	/////////////////////
+
+	//I'm also updating the point count here
+	points = 0;
+
 	PlayerBallCollision(player, ball);
 
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < instance.ballNum; i++)
 	{
 		cap[i].update(deltaTime, *this);
 		BallPointCollision(ball, cap[i]);
+
+		if (cap[i].team.teamNum == player.team.teamNum)
+			points += 1;
 	}
 
 	//Boundary Collision
@@ -221,7 +224,7 @@ void GameState::tick(float deltaTime, vec2 &cam)
 		BoundCollision(player, bounds[i], .6);
 		BoundCollision(ball, bounds[i], .8);
 
-		for (int j = 0; j < 4; j++)
+		for (int j = 0; j < instance.ballNum; j++)
 			BoundCollision(cap[j], bounds[i], .8);
 	}	
 	
@@ -243,23 +246,35 @@ void GameState::draw()
 	if (isWin)
 		return;	
 
-	releaseCursor ? drawString(font, "OPEN", W / 2, H - 5, 16, 16, 0, '\0', GREEN) : drawString(font, "LOCKED", W / 2, H - 5, 16, 16, 0, '\0', RED);
-	drawString(font, "Press E to exit\nPress R to toggle locked cursor", 0, H - 5, 16, 16, 0, '\0', WHITE);
-
 	mat3 cam = camera.getCameraMatrix();
 	player.draw(cam);
 	ball.draw(cam);
-
-		
-	printf("%f", fabsf(round(fmodf(player.transform.rotAngle + 90, 360))));
-	printf("\n");
 	
-	//Print boundaries (debug)
-	for (int i = 0; i < 4; i++)
-	{
+	for (int i = 0; i < instance.ballNum; i++)
 		cap[i].draw(cam);
+		
+	for (int i = 0; i < 4; i++)
 		bounds[i].collider.StaticDraw(cam, CYAN);
-	}
+
+	//Cursor status
+	releaseCursor ? drawString(font, "OPEN", (W / 2) - 32, H - 5, 16, 16, 0, '\0', GREEN) : drawString(font, "LOCKED", (W / 2) - 48, H - 5, 16, 16, 0, '\0', RED);
+
+	//Show Timer:
+	drawString(font, "Time Left: ", 25, H - 5, 14, 14);
+
+	string timer_print = to_string(currentTime);
+	timeLimit > 0 ?
+		drawString(font, timer_print.c_str(), 180, H - 5, 16, 16) :
+		drawString(font, "\354", 180, H - 5, 14, 14);
+
+	//Show points
+	//drawString(font, "Captured: ", W - 250, H - 5, 14, 14);
+
+	string currentPoints = to_string(points);
+	string totalPoints = to_string(cap.size());
+
+	string pointStr = "Captured: " + currentPoints + "/" + totalPoints;
+	drawString(font, pointStr.c_str(), W - 250, H - 5, 14, 14);
 	
 	//Show coordinates
 	string xpos = to_string(player.transform.pos.x);
@@ -271,7 +286,7 @@ void GameState::draw()
 
 EState GameState::next()
 {
-	if(isWin)
+	if((timeLimit >= 0 && currentTime <= 0) || isWin)
 		nextState = EState::ENTER_END;
 	return nextState;
 }

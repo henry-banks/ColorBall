@@ -1,5 +1,6 @@
 #pragma once
 #include "sfwdraw.h"
+using namespace sfw;
 
 //Used to store data from options
 struct GameInstance
@@ -10,9 +11,12 @@ struct GameInstance
 	unsigned color1 = CYAN, color2 = WHITE;
 	//Whether or not there is a time limit
 	bool isTimed = true;
-	//How long (in seconds) a timed round will be.
-	int timeLimit = 300;
-	//Dimensions of the playing field
-	int width = 1000, height = 1000;
-};
+	//How long (in minutes) a timed round will be.
+	int timeLimit = -1;
+	//Dimensions of the playing field, not the screen
+	int width = 500, height = 500;
 
+	unsigned font = loadTextureMap("./res/fontmap.png", 16, 16);
+	unsigned cursor = loadTextureMap("./res/ball.png");
+	unsigned clickedCursor = loadTextureMap("./res/ball_clicked.png");
+};
