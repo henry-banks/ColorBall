@@ -49,6 +49,11 @@ void Collider::Draw(const mat3 & t, const Transform & trans, unsigned color)
 	drawHull(glob * hull, color);
 }
 
+void Collider::StaticDraw(const mat3 & t, unsigned color)
+{
+	drawHull(t * hull, color);
+}
+
 CollisionData ColliderCollision(const Transform & aT, const Collider & aC, const Transform & bT, const Collider & bC)
 {
 	CollisionData out;

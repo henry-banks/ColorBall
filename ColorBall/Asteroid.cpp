@@ -26,7 +26,7 @@ void Asteroid::update(float deltaTime, GameState & gs)
 
 void Asteroid::draw(const mat3 & camera)
 {
-	transform.debugDraw(camera);
+	//transform.debugDraw(camera);
 	collider.DebugDraw(camera, transform);
 	rigidbody.debugDraw(transform, camera);
 }

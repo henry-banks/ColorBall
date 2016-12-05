@@ -4,7 +4,7 @@
 
 Camera::Camera(int W, int H)
 {
-	proj = translate(W, H) * scale(4, 4);
+	proj = translate(W, H) * scale(1, 1);
 }
 
 

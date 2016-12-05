@@ -7,18 +7,35 @@
 using namespace sfw;
 
 
-CaptureBall::CaptureBall()
+void CaptureBall::baseInit()
 {
+	srand(time(0));
+
 	vec2 hullVerts[] = { { 2,4 },{ -2,4 },{ -4,2 },{ -4,-2 },{ -2,-4 },{ 2,-4 },{ 4,-2 },{ 4,2 } };
 	collider = Collider(hullVerts, 8);
 
-	rigidbody.mass = .1f;
-	rigidbody.drag = .1f;
+	transform.scl = vec2{ 2,2 };
 
-	moveTimer = 0;
+	rigidbody.mass = .1f;
+	rigidbody.drag = 1.f;
+
 	turnTimer = 0;
 }
 
+CaptureBall::CaptureBall()
+{
+	baseInit();
+}
+
+CaptureBall::CaptureBall(int xBound, int yBound)
+{
+	baseInit();
+	float x = rand() % (xBound * 2) - xBound;
+	float y = rand() % (yBound * 2) - yBound;
+
+	transform.pos = vec2{ x,y };
+	transform.rotAngle = rand();
+}
 
 CaptureBall::~CaptureBall()
 {
@@ -26,28 +43,16 @@ CaptureBall::~CaptureBall()
 
 void CaptureBall::update(float deltaTime, GameState & gs)
 {
-	if (moveTimer <= 0)
-	{
-		//Move the ball in a random direction and reset the move timer to something between 2 and 4
-		//moveDir = (rand() % 200) -100.f * vec2{ 1, 1 };
-		moveTimer = 1;
+	//Move the ball in a random direction and reset the move timer to something between 2 and 4
+	rigidbody.addForce(transform.getUp() * vec2{ 500, 500 } * deltaTime);
 
-		//rigidbody.velocity = vec2{ 0,0 };
-		rigidbody.addForce(transform.getUp() * vec2 { 50, 50 });
-	}
 	if (turnTimer <= 0)
 	{
 		turnTimer = (rand() % 5) + 2;
-		//rigidbody.drag = moveTimer / 10;
-
-		//rigidbody.addForce(moveDir);
-		//rigidbody.velocity = moveDir;
 		rigidbody.addTorque(10 * (rand() % 200) - 100);
 	}
-	moveTimer -= deltaTime;
 	turnTimer -= deltaTime;
-
-	//rigidbody.addForce(vec2{ 1,1 });
+	
 	rigidbody.integrate(transform, deltaTime);
 }
 
@@ -55,7 +60,7 @@ void CaptureBall::draw(const mat3 & camera)
 {
 	mat3 glob = camera * transform.getGlobalTransform();
 
-	spd::drawCircle(glob * Circle{ 0,0,2 }, team.color);
-	//collider.Draw(camera, transform, team.color);
+	//collider.DebugDraw(glob, transform);
+	collider.Draw(camera, transform, team.color);
 	//rigidbody.debugDraw(transform, camera);
 }
