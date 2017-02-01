@@ -122,11 +122,11 @@ void Transform::debugDraw(const mat3 &t) const
 	/*drawLine(nPos.x, nPos.y, right.x, right.y, RED);
 	drawLine(nPos.x, nPos.y, up.x, up.y, GREEN);*/
 
-	/*vec2 dirEnd = pos + getDir()*scl.x / 2.25;
+	vec2 dirEnd = pos + getDir()*scl.x / 2.25;
 	vec2 upEnd = pos + perp(getDir()) * scl.y * 2.25;
 
 	drawLine(nPos.x, nPos.y, dirEnd.x, dirEnd.y, RED);
-	drawLine(nPos.x, nPos.y, upEnd.x, upEnd.y, GREEN);*/
+	drawLine(nPos.x, nPos.y, upEnd.x, upEnd.y, GREEN);
 	
 	vec3 pPos = m_parent ? t * m_parent->getGlobalTransform().c[2] : nPos;
 	drawLine(pPos.x, pPos.y, nPos.x, nPos.y, BLUE);

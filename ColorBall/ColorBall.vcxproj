@@ -133,6 +133,8 @@
     <ClCompile Include="MenuButton.cpp" />
     <ClCompile Include="MenuState.cpp" />
     <ClCompile Include="ObjectCollision.cpp" />
+    <ClCompile Include="Particle.cpp" />
+    <ClCompile Include="ParticleSpawner.cpp" />
     <ClCompile Include="PlanetMotor.cpp" />
     <ClCompile Include="PlanetRender.cpp" />
     <ClCompile Include="PlayerBall.cpp" />
@@ -158,6 +160,9 @@
     <ClInclude Include="MenuButton.h" />
     <ClInclude Include="MenuState.h" />
     <ClInclude Include="ObjectCollision.h" />
+    <ClInclude Include="ObjPool.h" />
+    <ClInclude Include="Particle.h" />
+    <ClInclude Include="ParticleSpawner.h" />
     <ClInclude Include="PlanetMotor.h" />
     <ClInclude Include="PlanetRender.h" />
     <ClInclude Include="PlayerBall.h" />
