@@ -11,6 +11,7 @@
 #include "GameInstance.h"
 #include "EndState.h"
 #include "flops.h"
+#include "ParticleSpawner.h"
 
 //Make sure Windows.h is LAST
 #include <Windows.h>
@@ -19,7 +20,7 @@ using namespace sfw;
 using namespace std;
 
 
-void main()
+void colorBall()
 {
 	float W = 1200, H = 800;
 	char title[] = "ColorBall";
@@ -109,4 +110,40 @@ void main()
 	}
 
 	termContext();
+}
+
+void particleStuff()
+{
+	float W = 1200, H = 800;
+	char title[] = "ColorBall";
+	initContext(W, H, title);
+	setBackgroundColor(0x222222ff);
+
+	unsigned f = loadTextureMap("./fontmap.png", 16, 16);
+	GameState game = GameState(title, f, W, H);
+	game.play();
+
+	SetCursorPos(W / 2, H / 2);
+	bool isExit = false;
+
+	mat3 cam;
+	ParticleSpawner spawner;
+
+	while (stepContext() && !isExit)
+	{
+		float deltaTime = getDeltaTime();
+
+		spawner.update(deltaTime, game);
+		spawner.draw(cam);
+
+	}
+	termContext();
+}
+
+void main()
+{
+	particleStuff();
+
+	printf("\n\n");
+	system("pause");
 }

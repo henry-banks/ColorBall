@@ -139,6 +139,8 @@
     <ClCompile Include="ObjectCollision.cpp" />
     <ClCompile Include="OptionNum.cpp" />
     <ClCompile Include="OptionState.cpp" />
+    <ClCompile Include="Particle.cpp" />
+    <ClCompile Include="ParticleSpawner.cpp" />
     <ClCompile Include="PlanetMotor.cpp" />
     <ClCompile Include="PlanetRender.cpp" />
     <ClCompile Include="PlayerBall.cpp" />
@@ -169,6 +171,8 @@
     <ClInclude Include="ObjectCollision.h" />
     <ClInclude Include="OptionNum.h" />
     <ClInclude Include="OptionState.h" />
+    <ClInclude Include="Particle.h" />
+    <ClInclude Include="ParticleSpawner.h" />
     <ClInclude Include="PlanetMotor.h" />
     <ClInclude Include="PlanetRender.h" />
     <ClInclude Include="PlayerBall.h" />
