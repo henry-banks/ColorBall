@@ -1,9 +1,9 @@
 - Add ball-ball and player-ball collision (DONE)
 - Add color stuff (DONE)
-- Add player rotation
-- Add boundaries
+- Add player rotation (DONE-ish)
+- Add boundaries (DONE)
 - Make player sprite lag-follow mouse (?)
-	-Alternatively, keep player attached to mouse but confine mouse to window and pan camera when mouse hits the edge
+	-Alternatively, keep player attached to mouse but confine mouse to window and pan camera when mouse hits the edge (wip)
 - Add all the menus and buttons and stuff (DONE)
 - Add the enemy AI
 - Add score and stuff

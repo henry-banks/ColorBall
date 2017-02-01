@@ -124,6 +124,11 @@ float CatRomSpline(float start, float mid, float end, float tight)
 	return point;
 }
 
+float perpAngle(float angle)
+{
+	return  -(1/angle);
+}
+
 vec2 lerp(vec2 a, vec2 b, float alpha)
 {
 	vec2 retval;

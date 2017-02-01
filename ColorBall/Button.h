@@ -11,6 +11,7 @@ class Button
 protected:
 	int font;
 	int size;
+	//x1 and y1 define the UPPER-RIGHT corner of the button
 	float x1, x2, y1, y2;
 	unsigned color;
 	std::string text;
@@ -22,8 +23,8 @@ public:
 	~Button();
 
 	bool isClicked;
-	void draw();
-	void tick();
+	virtual void draw();
+	virtual void tick();
 
 	//The function to call when the button is clicked
 	virtual void onClicked() = 0;

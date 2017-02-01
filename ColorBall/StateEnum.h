@@ -1,11 +1,14 @@
 #pragma once
 
-enum class EState
+enum EState
 {
 	ENTER_MENU,
 	MENU,
+	ENTER_ABOUT,
 	ABOUT,
+	ENTER_OPTION,
 	OPTION,
+	EXIT_OPTION,
 	ENTER_GAME,
 	GAME,
 	ENTER_END,

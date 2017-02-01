@@ -37,8 +37,8 @@ AABB operator*(const mat3 & t, const AABB & b)
 	tp[2] = t * vec3{ b.min().x, b.max().y, 1 };
 	tp[3] = t * vec3{ b.max().x, b.min().y, 1 };
 
-	vec2 minv = tp[0].xy;
-	vec2 maxv = tp[0].xy;
+	vec2 minv = vec2{ INFINITY, INFINITY };
+	vec2 maxv = vec2{ -INFINITY, -INFINITY };
 
 	for (int i = 0; i < 4; i++)
 	{

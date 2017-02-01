@@ -7,6 +7,9 @@ Button::Button()
 {
 	isClicked = false;
 	size = 20;
+	x1 = 5, y1 = 5;
+	x2 = 25, y1 = 25;
+	color = WHITE;
 }
 
 Button::Button(int a_font, float a_x1, float a_y1, float width, float height, int a_color, std::string a_text)
@@ -33,7 +36,7 @@ Button::Button(int a_font, float a_x1, float a_y1, float width, float height, in
 	x1 = a_x1;
 	x2 = x1 + width;
 	y1 = a_y1;
-	y2 = y1 - height;
+	y2 = y1 + height;
 	color = a_color;
 	text = a_text;
 
@@ -62,10 +65,6 @@ void Button::tick()
 	{
 		onClicked();
 	}
-	//isClicked should only be true for a single tick
-	/*if (isClicked) {
-	isClicked = false;
-	}*/
 }
 
 unsigned Button::getFont()
@@ -135,30 +134,8 @@ void cursorDraw(int normalTex, int clickedTex)
 {
 	if (sfw::getMouseButton(MOUSE_BUTTON_LEFT)) {
 		drawTexture(clickedTex, getMouseX(), getMouseY(), 20, 20);
-
-		//Geometry-based cursor
-		/*	drawCircle(getMouseX(), getMouseY(), 9, 15, 0x00ffff50);
-		drawCircle(getMouseX(), getMouseY(), 8, 15, 0x00ffff80);
-		drawCircle(getMouseX(), getMouseY(), 7, 15, 0x00ffffc0);
-		drawCircle(getMouseX(), getMouseY(), 6, 15, 0x00fffff0);
-		drawCircle(getMouseX(), getMouseY(), 5, 15, 0xFFFFFFc0);
-		drawCircle(getMouseX(), getMouseY(), 4, 15, 0xFFFFFF80);
-		drawCircle(getMouseX(), getMouseY(), 3, 15, 0xFFFFFF60);
-		drawCircle(getMouseX(), getMouseY(), 2, 15, 0xFFFFFF40);
-		drawCircle(getMouseX(), getMouseY(), 1, 15, 0xFFFFFF25);*/
 	}
 	else {
 		drawTexture(normalTex, getMouseX(), getMouseY(), 20, 20);
-
-		//Geometry-based cursor
-		/*	drawCircle(getMouseX(), getMouseY(), 9, 15, 0x00ffff20);
-		drawCircle(getMouseX(), getMouseY(), 8, 15, 0x00ffff50);
-		drawCircle(getMouseX(), getMouseY(), 7, 15, 0x00ffff80);
-		drawCircle(getMouseX(), getMouseY(), 6, 15, 0x00ffffc0);
-		drawCircle(getMouseX(), getMouseY(), 5, 15, 0xFFFFFF80);
-		drawCircle(getMouseX(), getMouseY(), 4, 15, 0xFFFFFF60);
-		drawCircle(getMouseX(), getMouseY(), 3, 15, 0xFFFFFF40);
-		drawCircle(getMouseX(), getMouseY(), 2, 15, 0xFFFFFF20);
-		drawCircle(getMouseX(), getMouseY(), 1, 15, 0xFFFFFF05);*/
 	}
 }

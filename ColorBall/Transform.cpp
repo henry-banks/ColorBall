@@ -11,8 +11,8 @@ Transform::Transform()
 	pos.x = 0;
 	pos.y = 0;
 
-	scl.x = 10;
-	scl.y = 10;
+	scl.x = 1;
+	scl.y = 1;
 
 	rotAngle = 0;
 

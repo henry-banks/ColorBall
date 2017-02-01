@@ -1,14 +1,19 @@
 #pragma once
 #include "State.h"
 #include "PlayerShip.h"
-#include "PlayerSprite.h"
 #include "Camera.h"
 #include "Asteroid.h"
 #include "PlayerBall.h"
 #include "CaptureBall.h"
+#include "Boundary.h"
+#include "GameInstance.h"
+
 #include <string>
+#include <vector>
 
 #include <Windows.h>
+
+using namespace std;
 /*
 	INIT(ialize)
 		- Called at application start
@@ -35,32 +40,40 @@
 
 class GameState : public State
 {
+	//Jamming this into an init function to tidy up the constructors
+	void baseInit(int W_a, int H_a, int xBound_a, int yBound_a);
+
+	float timeLimit, currentTime;
+	int points;	//How many balls you have captured
+
 public:
-	GameState(float W_a = 600, float H_a = 600);
-	GameState(unsigned inFont, float W_a = 600, float H_a = 600);
-	GameState(std::string inTitle, unsigned inFont, float W_a = 600, float H_a = 600);
+	GameState(std::string inTitle, unsigned inFont, int W_a = 600, int H_a = 600);
 	~GameState();
 
-	PlayerSprite	player;
-	Camera			camera;
-	PlayerBall		asteroid[2];
-	CaptureBall		cap[4];
+	PlayerShip			player;
+	Camera				camera;
+	PlayerBall			ball;
+	vector<CaptureBall>	cap;
+	Boundary			bounds[4];
 
 	//Used to lock cursor to screen
 	bool cursorLock;
 	bool isWin;
 	float lockTimer;	//Timer to prevent toggle spam
-	float W, H;
-	std::string title;	//No title should be over 100 letters
-	vec2 movement;		//Used to move cursor
+	int W, H;
+	//Right-most and upper-most extents of the playing field (not the screen);
+	int xBound, yBound;
+	string title;		//Used for clipping cursor
+	GameInstance instance;
 
 	HWND hwnd;
-	RECT rect;
 	POINT cursorPos[1];
 	bool releaseCursor;
 	float releaseTimer;
 
+	//Required because of base class
 	void play();
+	void play(GameInstance inInstance);
 	void tick();
 	void tick(float deltaTime, vec2 &cam);
 	void draw();

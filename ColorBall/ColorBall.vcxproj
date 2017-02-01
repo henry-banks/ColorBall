@@ -89,7 +89,7 @@
       <AdditionalIncludeDirectories>$(SolutionDir)MathLib\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(SolutionDir)$(Configuration)\;$(SolutionDir)dep\sfw\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)$(Platform)\$(Configuration)\;$(SolutionDir)dep\sfw\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>MathLib.lib;sfw.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -123,58 +123,62 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AboutState.cpp" />
     <ClCompile Include="Asteroid.cpp" />
+    <ClCompile Include="Boundary.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CaptureBall.cpp" />
     <ClCompile Include="Collider.cpp" />
+    <ClCompile Include="EndState.cpp" />
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MenuButton.cpp" />
     <ClCompile Include="MenuState.cpp" />
+    <ClCompile Include="NumButton.cpp" />
     <ClCompile Include="ObjectCollision.cpp" />
-    <ClCompile Include="Particle.cpp" />
-    <ClCompile Include="ParticleSpawner.cpp" />
+    <ClCompile Include="OptionNum.cpp" />
+    <ClCompile Include="OptionState.cpp" />
     <ClCompile Include="PlanetMotor.cpp" />
     <ClCompile Include="PlanetRender.cpp" />
     <ClCompile Include="PlayerBall.cpp" />
     <ClCompile Include="PlayerShip.cpp" />
-    <ClCompile Include="PlayerSprite.cpp" />
     <ClCompile Include="RigidBody.cpp" />
     <ClCompile Include="shapedraw.cpp" />
     <ClCompile Include="ShipRender.cpp" />
     <ClCompile Include="SpaceObject.cpp" />
     <ClCompile Include="Spaceship.cpp" />
     <ClCompile Include="SpaceshipController.cpp" />
-    <ClCompile Include="SpriteController.cpp" />
     <ClCompile Include="State.cpp" />
     <ClCompile Include="Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AboutState.h" />
     <ClInclude Include="Asteroid.h" />
+    <ClInclude Include="Boundary.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CaptureBall.h" />
     <ClInclude Include="Collider.h" />
+    <ClInclude Include="EndState.h" />
+    <ClInclude Include="GameInstance.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="MenuButton.h" />
     <ClInclude Include="MenuState.h" />
+    <ClInclude Include="NumButton.h" />
     <ClInclude Include="ObjectCollision.h" />
-    <ClInclude Include="ObjPool.h" />
-    <ClInclude Include="Particle.h" />
-    <ClInclude Include="ParticleSpawner.h" />
+    <ClInclude Include="OptionNum.h" />
+    <ClInclude Include="OptionState.h" />
     <ClInclude Include="PlanetMotor.h" />
     <ClInclude Include="PlanetRender.h" />
     <ClInclude Include="PlayerBall.h" />
     <ClInclude Include="PlayerShip.h" />
-    <ClInclude Include="PlayerSprite.h" />
     <ClInclude Include="RigidBody.h" />
     <ClInclude Include="shapedraw.h" />
     <ClInclude Include="ShipRender.h" />
     <ClInclude Include="SpaceObject.h" />
     <ClInclude Include="Spaceship.h" />
     <ClInclude Include="SpaceshipController.h" />
-    <ClInclude Include="SpriteController.h" />
     <ClInclude Include="State.h" />
     <ClInclude Include="StateEnum.h" />
     <ClInclude Include="Transform.h" />
